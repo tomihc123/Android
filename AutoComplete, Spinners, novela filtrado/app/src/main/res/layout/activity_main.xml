@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lo"
+    tools:context=".MainActivity">
+
+<AutoCompleteTextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:completionThreshold="1"
+    android:hint="Novelas"
+    android:id="@+id/autoComplete"
+   />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/autoComplete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="150dp"
+        android:id="@+id/Spinner"
+        />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_button"
+        android:text="+"
+        android:textSize="20px"
+        app:layout_constraintBottom_toTopOf="@id/Spinner"
+        app:layout_constraintTop_toBottomOf="@id/autoComplete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="200dp"
+         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:textSize="20px"
+        app:layout_constraintTop_toTopOf="@id/add"
+        android:background="@drawable/background_button"
+        app:layout_constraintStart_toEndOf="@+id/add"
+        android:layout_marginStart="100dp"
+        android:id="@+id/eliminar"
+        ></Button>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lista"
+        android:textSize="20px"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/Spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="250dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="100dp"
+        android:id="@+id/lista"
+        android:background="@drawable/background_button"
+        ></Button>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ALARMA"
+        android:textSize="20px"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/Spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="250dp"
+        android:layout_marginTop="100dp"
+        android:id="@+id/horario"
+        android:background="@drawable/background_button"
+        ></Button>
+</androidx.constraintlayout.widget.ConstraintLayout>
