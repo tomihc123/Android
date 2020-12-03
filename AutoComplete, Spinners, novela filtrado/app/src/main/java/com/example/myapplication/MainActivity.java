@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intentoHorario = new Intent(MainActivity.this, Alarma.class);
                 startActivity(intentoHorario);
 
+                break;
+
         }
 
         spinner.setAdapter(adaptadorSpinner);

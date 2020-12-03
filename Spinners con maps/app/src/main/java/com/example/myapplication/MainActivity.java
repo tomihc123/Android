@@ -8,14 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     Spinner spinner;
     ArrayList<Lugar> lugares;
+    Button email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         AdaptadorSpinner adaptadorSpinner = new AdaptadorSpinner(this, lugares);
         spinner.setAdapter(adaptadorSpinner);
         spinner.setOnItemSelectedListener(this);
+
+        email = findViewById(R.id.email);
+        email.setOnClickListener(this);
 
 
     }
@@ -69,6 +74,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.email:
+
+                Intent intent = new Intent(MainActivity.this, EmailActivity.class);
+                startActivity(intent);
+
+        }
 
     }
 }
