@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -84,6 +86,9 @@ public class AdapterList extends ArrayAdapter<Novela> {
 
         holder.getNombre().setText(novela.getNombre());
         holder.getImagen().setImageResource(novela.getImagen());
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.face_jn);
+        row.startAnimation(animation);
 
         return row;
 
