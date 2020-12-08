@@ -12,7 +12,7 @@
         <activity android:name=".AnadirNovela"></activity>
         <activity android:name=".SpinnerActivity" />
         <activity android:name=".DetallesNovelas" />
-        <activity android:name=".MainActivity" android:windowSoftInputMode="stateHidden|adjustResize" >
+        <activity android:name=".MainActivity" android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

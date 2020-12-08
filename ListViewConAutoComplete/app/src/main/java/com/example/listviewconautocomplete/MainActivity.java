@@ -29,6 +29,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener, AdapterView.OnItemLongClickListener {
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         loadData();
+
 
      /*   if(savedInstanceState == null) {
 
@@ -123,7 +126,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Novela novela = (Novela) parent.getItemAtPosition(position);
         Intent mostrarDetallesNovelas = new Intent(MainActivity.this, DetallesNovelas.class);
         mostrarDetallesNovelas.putExtra("Novela", novela);
-        startActivity(mostrarDetallesNovelas);
+        mostrarDetallesNovelas.putExtra("posicion", position);
+        startActivityForResult(mostrarDetallesNovelas, 3);
     }
 
 
@@ -161,23 +165,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
+
             if(Activity.RESULT_OK == resultCode) {
                 Novela novela = (Novela) data.getSerializableExtra("resultadoSpinner");
                 Toast.makeText(this, novela.getNombre(), Toast.LENGTH_LONG).show();
             }
+
         } else if (requestCode == 2) {
-            if(Activity.RESULT_OK == resultCode) {
 
-                Novela novela = (Novela) data.getSerializableExtra("nuevaNovela");
-                novelas.add(novela);
-                adaptadorLista = new AdapterList(this, novelas);
-                lista.setAdapter(adaptadorLista);
+                if(Activity.RESULT_OK == resultCode) {
 
-               /* adapterAutoComplete = new AdapterAutoComplete(this, novelas);
-                buscadorLista.setAdapter(adapterAutoComplete); */
+                    Novela novela = (Novela) data.getSerializableExtra("nuevaNovela");
+                    novelas.add(novela);
+                    adaptadorLista = new AdapterList(this, novelas);
+                    lista.setAdapter(adaptadorLista);
+
+                   /* adapterAutoComplete = new AdapterAutoComplete(this, novelas);
+                    buscadorLista.setAdapter(adapterAutoComplete); */
+
+                }
+
+            } else if(requestCode == 3) {
+
+                if(Activity.RESULT_OK == resultCode) {
+                    Novela novela = (Novela)data.getSerializableExtra("novelaEditada");
+                    int posicion = data.getIntExtra("position", 0);
+                    novelas.set(posicion, novela);
+                    adaptadorLista = new AdapterList(this, novelas);
+                    lista.setAdapter(adaptadorLista);
+                }
             }
         }
-    }
+
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

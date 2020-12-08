@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetallesNovelas"
-    android:background="@drawable/fondo_detalle_novela">
+    android:background="@drawable/demon">
 
-    <TextView
+    <EditText
         android:id="@+id/nombreNovela"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imagenNovela"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         />
+
+   <Button
+       android:id="@+id/confirmarEditar"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="confirmar"
+       app:layout_constraintStart_toStartOf="@id/descripcionNovela"
+       app:layout_constraintEnd_toEndOf="@id/descripcionNovela"
+       app:layout_constraintTop_toBottomOf="@id/descripcionNovela"
+       android:layout_marginTop="20dp"
+       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

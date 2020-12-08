@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/venerable">
+    tools:context=".MainActivity">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/cabecera"
@@ -46,6 +45,18 @@
 
         />
 
+    <ImageView
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:src="@android:drawable/ic_menu_search"
+        app:layout_constraintEnd_toEndOf="@id/buscar"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintTop_toTopOf="@id/buscar"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="@id/buscar"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
@@ -56,6 +67,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:divider="@null"
+
         />
 
    <Button
@@ -67,7 +80,7 @@
        android:background="@drawable/background_buttom"
        app:layout_constraintBottom_toBottomOf="parent"
        app:layout_constraintEnd_toEndOf="parent"
-       android:layout_marginEnd="5dp"
+       android:layout_marginEnd="7dp"
        android:layout_marginBottom="25dp"
        />
 

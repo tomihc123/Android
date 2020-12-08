@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SpinnerActivity"
-    android:background="@drawable/fondo_detalle_novela">
+    android:background="@drawable/venerable">
 
     <Spinner
         android:id="@+id/spinner"
