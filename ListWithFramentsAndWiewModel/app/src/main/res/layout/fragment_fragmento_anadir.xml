@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentoAnadir"
+    android:background="@drawable/feng">
+
+    <EditText
+        android:id="@+id/nuevoNombreNovela"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_search"
+        android:hint="Nombre"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        />
+
+    <Button
+        android:id="@+id/botonAnadirConfirmar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/background_buttom"
+        android:text="Añadir"
+        app:layout_constraintEnd_toEndOf="@id/nuevoNombreNovela"
+        app:layout_constraintStart_toStartOf="@id/nuevoNombreNovela"
+        app:layout_constraintTop_toBottomOf="@id/nuevoNombreNovela" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
