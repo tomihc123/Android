@@ -3,6 +3,7 @@ package com.example.listwithframentsandwiewmodel;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -13,6 +14,7 @@ import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -82,6 +84,13 @@ public class FragmentoLista extends Fragment implements View.OnClickListener {
 
         adaptador = new ListAdapter(getActivity(), vm.getNovelas().getValue());
         lista.setAdapter(adaptador);
+
+        vm.getNovelas().observe(getActivity(), new Observer<ArrayList<Novela>>() {
+            @Override
+            public void onChanged(ArrayList<Novela> novelas) {
+                adaptador.notifyDataSetChanged();
+            }
+        });
 
         botonAnadir = v.findViewById(R.id.botonAnadir);
         botonAnadir.setOnClickListener(this);
