@@ -1,6 +1,81 @@
 package com.example.room;
 
-import android.content.Context;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+
+    private List<Novela> novelas = new ArrayList<>();
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
+        return new ViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Novela novela = novelas.get(position);
+        holder.nombre.setText(novela.getNombre());
+        holder.imagen.setImageResource(novela.getImagen());
+    }
+
+    public void setNovelas(List<Novela> novelas) {
+        this.novelas = novelas;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.novelas.size();
+    }
+
+    public Novela getItemAtPosition(int position) {
+        return novelas.get(position);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView nombre;
+        private ImageView imagen;
+
+            public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nombre = itemView.findViewById(R.id.nombre);
+            imagen = itemView.findViewById(R.id.logo);
+
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,4 +155,4 @@ public class ListAdapter extends ArrayAdapter<Novela> {
         }
     }
 
-}
+} */

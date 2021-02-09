@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 public class Novela {
 
     @PrimaryKey(autoGenerate = true)
+    private int id;
     private String nombre;
     private int imagen;
     private String descripcion;
@@ -15,6 +16,14 @@ public class Novela {
         this.nombre = nombre;
         this.imagen = imagen;
         this.descripcion = descripcion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {

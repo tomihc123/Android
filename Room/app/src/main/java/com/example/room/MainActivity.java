@@ -1,6 +1,7 @@
 package com.example.room;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -17,12 +18,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // novelaViewModel = ViewModelProviders.of(this).get(NovelaViewModel.class);
+        final boolean isSmall;
+
+        //ViewModel
         novelaViewModel = new ViewModelProvider(this).get(NovelaViewModel.class);
 
+        //Fragments
+        final FragmentoLista fragmentoLista = new FragmentoLista();
+        final FragmentoAnadir fragmentoAnadir = new FragmentoAnadir();
 
-        
 
+        if(findViewById(R.id.contenedorGeneral) != null) {
+            isSmall = false;
+            getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
+
+        } else {
+            //TODO implementar tablet
+            isSmall = true;
+        }
+
+        novelaViewModel.getVisualizacion().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(s.equals(getResources().getString(R.string.VISUALIZACION_LISTA))) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
+                } else {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).addToBackStack(null).commit();
+                }
+            }
+        });
 
     }
 }
