@@ -14,6 +14,7 @@ public class NovelaViewModel extends AndroidViewModel {
     private NovelaRepository novelaRepository;
     private LiveData<List<Novela>> novelas;
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
+    private MutableLiveData<Novela> novelaParaEditar = new MutableLiveData<>();
 
     public NovelaViewModel(Application application) {
 
@@ -39,11 +40,21 @@ public class NovelaViewModel extends AndroidViewModel {
         novelaRepository.eliminar(novela);
     }
 
+
+
     public MutableLiveData<String> getVisualizacion() {
         return visualizacion;
     }
 
     public void setVisualizacion(String visualizacion) {
         this.visualizacion.setValue(visualizacion);
+    }
+
+    public Novela getNovelaParaEditar() {
+        return novelaParaEditar.getValue();
+    }
+
+    public void setNovelaParaEditar(Novela novela) {
+        this.novelaParaEditar.setValue(novela);
     }
 }

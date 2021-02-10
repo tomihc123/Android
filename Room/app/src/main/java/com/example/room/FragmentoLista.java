@@ -1,5 +1,6 @@
 package com.example.room;
 
+import android.animation.TimeAnimator;
 import android.content.ClipData;
 import android.os.Bundle;
 
@@ -26,7 +27,7 @@ import java.util.List;
  * Use the {@link FragmentoLista#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentoLista extends Fragment {
+public class FragmentoLista extends Fragment  {
 
     //ViewModel
     private NovelaViewModel novelaViewModel;
@@ -87,7 +88,13 @@ public class FragmentoLista extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lista, container, false);
 
-        adaptador = new ListAdapter();
+        adaptador = new ListAdapter(new ListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Novela novela) {
+                novelaViewModel.setNovelaParaEditar(novela);
+                novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_EDITAR));
+            }
+        });
 
         recyclerView = v.findViewById(R.id.lista);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -123,4 +130,5 @@ public class FragmentoLista extends Fragment {
         });
         return v;
     }
+
 }

@@ -26,24 +26,29 @@ public class MainActivity extends AppCompatActivity {
         //Fragments
         final FragmentoLista fragmentoLista = new FragmentoLista();
         final FragmentoAnadir fragmentoAnadir = new FragmentoAnadir();
+        final FragmentoEditar fragmentoEditar = new FragmentoEditar();
 
 
         if(findViewById(R.id.contenedorGeneral) != null) {
-            isSmall = false;
+            isSmall = true;
             getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
 
         } else {
             //TODO implementar tablet
-            isSmall = true;
+            isSmall = false;
         }
 
         novelaViewModel.getVisualizacion().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if(s.equals(getResources().getString(R.string.VISUALIZACION_LISTA))) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
-                } else {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).addToBackStack(null).commit();
+                if (isSmall) {
+                    if (s.equals(getResources().getString(R.string.VISUALIZACION_LISTA))) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
+                    } else if (s.equals(getResources().getString(R.string.VISUALIZACION_ANADIR))) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).addToBackStack(null).commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoEditar).addToBackStack(null).commit();
+                    }
                 }
             }
         });

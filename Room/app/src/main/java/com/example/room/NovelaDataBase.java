@@ -23,7 +23,6 @@ public abstract class NovelaDataBase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(), NovelaDataBase.class, "database").fallbackToDestructiveMigration().build();
         }
         return instance;
-
     }
 
 }

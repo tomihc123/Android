@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentoEditar"
+    android:background="@drawable/fangyuan">
+
+    <EditText
+        android:id="@+id/nombreNovelaEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"
+        android:inputType="text"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/nombreNovelaEditar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"
+        android:id="@+id/imagenNovela"
+        />
+    <EditText
+        android:id="@+id/descripcionNovelaEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imagenNovela"
+        android:layout_marginTop="40dp"
+        android:inputType="text"
+        />
+
+    <Button
+        android:id="@+id/confirmarEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="confirmar"
+        app:layout_constraintStart_toStartOf="@id/descripcionNovelaEditar"
+        app:layout_constraintEnd_toEndOf="@id/descripcionNovelaEditar"
+        app:layout_constraintTop_toBottomOf="@id/descripcionNovelaEditar"
+        android:layout_marginTop="20dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

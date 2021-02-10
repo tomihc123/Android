@@ -42,7 +42,6 @@ public class NovelaRepository {
     }
 
     public void actualizar(Novela novela) {
-
         new UpdateNoteAsycnTask(novelaDAO).execute(novela);
     }
 
@@ -97,7 +96,5 @@ public class NovelaRepository {
             return null;
         }
     }
-
-
 
 }

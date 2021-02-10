@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,12 +17,17 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private List<Novela> novelas = new ArrayList<>();
+    private final OnItemClickListener listener;
+
+    public ListAdapter(OnItemClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, listener);
     }
 
     @Override
@@ -49,13 +55,26 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         private TextView nombre;
         private ImageView imagen;
 
-            public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             nombre = itemView.findViewById(R.id.nombre);
             imagen = itemView.findViewById(R.id.logo);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(novelas.get(getAdapterPosition()));
+                }
+            });
 
         }
+
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(Novela novela);
+    }
+
+
 }
 
 
