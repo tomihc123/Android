@@ -50,8 +50,8 @@ public class NovelaViewModel extends AndroidViewModel {
         this.visualizacion.setValue(visualizacion);
     }
 
-    public Novela getNovelaParaEditar() {
-        return novelaParaEditar.getValue();
+    public MutableLiveData<Novela> getNovelaParaEditar() {
+        return novelaParaEditar;
     }
 
     public void setNovelaParaEditar(Novela novela) {

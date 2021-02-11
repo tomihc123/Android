@@ -80,7 +80,7 @@ public class FragmentoAnadir extends Fragment {
         botonAnadirNovela.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (nuevoNombre.getText().toString().trim().length() > 0 && nuevoNombre.getText().toString().trim().length() > 0) {
+                if (!nuevoNombre.getText().toString().isEmpty() && !nuevaDescripcion.getText().toString().isEmpty()) {
                     novelaViewModel.insertar(new Novela(nuevoNombre.getText().toString(), R.drawable.fang, nuevaDescripcion.getText().toString()));
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_LISTA));
                 }

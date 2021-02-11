@@ -27,7 +27,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
-        return new ViewHolder(itemView, listener);
+        return new ViewHolder(itemView);
     }
 
     @Override
@@ -54,17 +54,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nombre;
         private ImageView imagen;
-        private OnItemClickListener onItemClickListener;
 
-        public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.nombre);
             imagen = itemView.findViewById(R.id.logo);
-            this.onItemClickListener = onItemClickListener;
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(novelas.get(getAdapterPosition()));
+                    listener.onItemClick(novelas.get(getAdapterPosition()));
                 }
             });
 

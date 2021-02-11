@@ -3,6 +3,7 @@ package com.example.room;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,22 +77,21 @@ public class FragmentoEditar extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_editar, container, false);
+
+
         editarNombre = v.findViewById(R.id.nombreNovelaEditar);
         editarDescripcion = v.findViewById(R.id.descripcionNovelaEditar);
         botonConfirmarEditar = v.findViewById(R.id.confirmarEditar);
         imagen = v.findViewById(R.id.imagenNovela);
 
-        editarNombre.setText(novelaViewModel.getNovelaParaEditar().getNombre());
-        editarDescripcion.setText(novelaViewModel.getNovelaParaEditar().getDescripcion());
-        imagen.setImageResource(novelaViewModel.getNovelaParaEditar().getImagen());
 
         botonConfirmarEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!editarNombre.getText().toString().isEmpty() && !editarNombre.getText().toString().isEmpty()) {
-                    novelaViewModel.getNovelaParaEditar().setNombre(editarNombre.getText().toString());
-                    novelaViewModel.getNovelaParaEditar().setDescripcion(editarDescripcion.getText().toString());
-                    novelaViewModel.actualizar(novelaViewModel.getNovelaParaEditar());
+                    novelaViewModel.getNovelaParaEditar().getValue().setNombre(editarNombre.getText().toString());
+                    novelaViewModel.getNovelaParaEditar().getValue().setDescripcion(editarDescripcion.getText().toString());
+                    novelaViewModel.actualizar(novelaViewModel.getNovelaParaEditar().getValue());
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_LISTA));
                 }
             }
@@ -98,5 +99,13 @@ public class FragmentoEditar extends Fragment {
 
         return v;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        editarNombre.setText(novelaViewModel.getNovelaParaEditar().getValue().getNombre());
+        editarDescripcion.setText(novelaViewModel.getNovelaParaEditar().getValue().getDescripcion());
+        imagen.setImageResource(novelaViewModel.getNovelaParaEditar().getValue().getImagen());
     }
 }
