@@ -84,14 +84,18 @@ public class FragmentoEditar extends Fragment {
         botonConfirmarEditar = v.findViewById(R.id.confirmarEditar);
         imagen = v.findViewById(R.id.imagenNovela);
 
+        editarNombre.setText(novelaViewModel.getNovelaParaEditar().getNombre());
+        editarDescripcion.setText(novelaViewModel.getNovelaParaEditar().getDescripcion());
+        imagen.setImageResource(novelaViewModel.getNovelaParaEditar().getImagen());
+
 
         botonConfirmarEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!editarNombre.getText().toString().isEmpty() && !editarNombre.getText().toString().isEmpty()) {
-                    novelaViewModel.getNovelaParaEditar().getValue().setNombre(editarNombre.getText().toString());
-                    novelaViewModel.getNovelaParaEditar().getValue().setDescripcion(editarDescripcion.getText().toString());
-                    novelaViewModel.actualizar(novelaViewModel.getNovelaParaEditar().getValue());
+                    novelaViewModel.getNovelaParaEditar().setNombre(editarNombre.getText().toString());
+                    novelaViewModel.getNovelaParaEditar().setDescripcion(editarDescripcion.getText().toString());
+                    novelaViewModel.actualizar(novelaViewModel.getNovelaParaEditar());
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_LISTA));
                 }
             }
@@ -104,8 +108,8 @@ public class FragmentoEditar extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        editarNombre.setText(novelaViewModel.getNovelaParaEditar().getValue().getNombre());
-        editarDescripcion.setText(novelaViewModel.getNovelaParaEditar().getValue().getDescripcion());
-        imagen.setImageResource(novelaViewModel.getNovelaParaEditar().getValue().getImagen());
+        editarNombre.setText(novelaViewModel.getNovelaParaEditar().getNombre());
+        editarDescripcion.setText(novelaViewModel.getNovelaParaEditar().getDescripcion());
+        imagen.setImageResource(novelaViewModel.getNovelaParaEditar().getImagen());
     }
 }

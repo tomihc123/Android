@@ -3,6 +3,7 @@ package com.example.room;
 import android.app.Application;
 import android.os.AsyncTask;
 import android.sax.TextElementListener;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 
@@ -42,7 +43,9 @@ public class NovelaRepository {
     }
 
     public void actualizar(Novela novela) {
+
         new UpdateNoteAsycnTask(novelaDAO).execute(novela);
+
     }
 
     private static class InsertNoteAsycnTask extends AsyncTask<Novela, Void, Void> {

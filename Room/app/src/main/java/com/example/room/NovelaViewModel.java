@@ -14,7 +14,7 @@ public class NovelaViewModel extends AndroidViewModel {
     private NovelaRepository novelaRepository;
     private LiveData<List<Novela>> novelas;
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
-    private MutableLiveData<Novela> novelaParaEditar = new MutableLiveData<>();
+    private Novela novelaParaEditar;
 
     public NovelaViewModel(Application application) {
 
@@ -50,11 +50,11 @@ public class NovelaViewModel extends AndroidViewModel {
         this.visualizacion.setValue(visualizacion);
     }
 
-    public MutableLiveData<Novela> getNovelaParaEditar() {
+    public Novela getNovelaParaEditar() {
         return novelaParaEditar;
     }
 
     public void setNovelaParaEditar(Novela novela) {
-        this.novelaParaEditar.setValue(novela);
+        this.novelaParaEditar = novela;
     }
 }
