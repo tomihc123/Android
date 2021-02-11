@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +25,7 @@ public class FragmentoEditar extends Fragment {
     //Widgets para editar novela
     private EditText editarNombre, editarDescripcion;
     private Button botonConfirmarEditar;
+    private ImageView imagen;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,9 +78,11 @@ public class FragmentoEditar extends Fragment {
         editarNombre = v.findViewById(R.id.nombreNovelaEditar);
         editarDescripcion = v.findViewById(R.id.descripcionNovelaEditar);
         botonConfirmarEditar = v.findViewById(R.id.confirmarEditar);
+        imagen = v.findViewById(R.id.imagenNovela);
 
         editarNombre.setText(novelaViewModel.getNovelaParaEditar().getNombre());
         editarDescripcion.setText(novelaViewModel.getNovelaParaEditar().getDescripcion());
+        imagen.setImageResource(novelaViewModel.getNovelaParaEditar().getImagen());
 
         botonConfirmarEditar.setOnClickListener(new View.OnClickListener() {
             @Override

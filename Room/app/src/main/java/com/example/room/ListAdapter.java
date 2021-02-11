@@ -54,11 +54,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nombre;
         private ImageView imagen;
+        private OnItemClickListener onItemClickListener;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             nombre = itemView.findViewById(R.id.nombre);
             imagen = itemView.findViewById(R.id.logo);
+            this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

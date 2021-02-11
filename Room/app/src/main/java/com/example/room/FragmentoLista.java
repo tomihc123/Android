@@ -1,7 +1,9 @@
 package com.example.room;
 
 import android.animation.TimeAnimator;
+import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,14 +14,18 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.style.AlignmentSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewAnimator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +33,7 @@ import java.util.List;
  * Use the {@link FragmentoLista#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentoLista extends Fragment  {
+public class FragmentoLista extends Fragment {
 
     //ViewModel
     private NovelaViewModel novelaViewModel;
@@ -38,6 +44,7 @@ public class FragmentoLista extends Fragment  {
 
     //Widgets
     private Button botonAnadir;
+    private EditText textoFiltro;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,7 +111,7 @@ public class FragmentoLista extends Fragment  {
         novelaViewModel.obtenerNovelas().observe(getActivity(), new Observer<List<Novela>>() {
             @Override
             public void onChanged(List<Novela> novelas) {
-               adaptador.setNovelas(novelas);
+                adaptador.setNovelas(novelas);
             }
         });
 
@@ -116,9 +123,54 @@ public class FragmentoLista extends Fragment  {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                novelaViewModel.eliminar(adaptador.getItemAtPosition(viewHolder.getAdapterPosition()));
+                AlertDialog dialogo = new AlertDialog
+                        .Builder(getActivity())
+                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                novelaViewModel.eliminar(adaptador.getItemAtPosition(viewHolder.getAdapterPosition()));
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                adaptador.setNovelas(novelaViewModel.obtenerNovelas().getValue());
+                            }
+                        })
+                        .setTitle("Confirmar")
+                        .setMessage("¿Deseas eliminar la novela "+adaptador.getItemAtPosition(viewHolder.getAdapterPosition()).getNombre()+" ?") // El mensaje
+                        .create();
+
+                dialogo.show();
+
             }
         }).attachToRecyclerView(recyclerView);
+
+
+        textoFiltro = v.findViewById(R.id.buscar);
+        textoFiltro.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ArrayList<Novela> filtro = new ArrayList<>();
+                for(Novela novela: novelaViewModel.obtenerNovelas().getValue()) {
+
+                    if(novela.getNombre().toLowerCase().contains(s.toString().toLowerCase())) {
+                        filtro.add(novela);
+                    }
+                    adaptador.setNovelas(filtro);
+                }
+            }
+        });
 
 
         botonAnadir = v.findViewById(R.id.botonAnadir);
