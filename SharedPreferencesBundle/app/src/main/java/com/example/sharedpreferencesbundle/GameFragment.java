@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class GameFragment extends Fragment {
     RadioButton piedra, papel, tijeras;
     ImageView  imagenOpcionUsuario, imagenOpcionCPU;
 
+    EditText partidasGanadas, partidasPerdias, partidasEmpatadas;
 
     Button confirmar;
     TextView mostrarGanador;
@@ -97,6 +99,15 @@ public class GameFragment extends Fragment {
         mostrarGanador = v.findViewById(R.id.mostrarGanador);
         imagenOpcionCPU = v.findViewById(R.id.imagenOpcionCPU);
         imagenOpcionUsuario = v.findViewById(R.id.imagenOpcionUsuario);
+        partidasGanadas = v.findViewById(R.id.partidasGanadas);
+        partidasPerdias = v.findViewById(R.id.partidasPerdidas);
+        partidasEmpatadas = v.findViewById(R.id.partidasEmpatadas);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        partidasGanadas.setText(""+sharedPreferences.getInt("Ganados",0));
+        partidasPerdias.setText(""+sharedPreferences.getInt("Derrota",0));
+        partidasEmpatadas.setText(""+sharedPreferences.getInt("Empate",0));
+
 
 
 
@@ -106,6 +117,7 @@ public class GameFragment extends Fragment {
                 comprobarEleccionUsuario();
                 opcionCpu();
                 mostrarGanador();
+                actualizarGanador();
             }
         });
 
@@ -148,7 +160,7 @@ public class GameFragment extends Fragment {
 
     }
 
-    private void mostrarGanador() {
+    private String mostrarGanador() {
         String resultado = "";
         switch (opcionUsuario) {
             case 1:
@@ -192,14 +204,21 @@ public class GameFragment extends Fragment {
             break;
         }
         mostrarGanador.setText(resultado);
+        return resultado;
     }
 
     private void actualizarGanador() {
-
-       SharedPreferences.Editor editor = sharedPreferences.edit();
-       editor.putInt("Ganados", sharedPreferences.getInt("Ganados", default))
-
-
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if(mostrarGanador().equals("Ganador")) {
+            editor.putInt("Ganados", sharedPreferences.getInt("Ganados", 0) + 1).commit();
+            partidasGanadas.setText(""+sharedPreferences.getInt("Ganados",0));
+        } else if(mostrarGanador().equals(("Derrota"))) {
+            editor.putInt("Derrota", sharedPreferences.getInt("Derrota", 0) + 1).commit();
+            partidasPerdias.setText(""+sharedPreferences.getInt("Derrota",0));
+        } else {
+            editor.putInt("Empate", sharedPreferences.getInt("Empate", 0) + 1).commit();
+            partidasEmpatadas.setText(""+sharedPreferences.getInt("Empate",0));
+        }
     }
 
 
