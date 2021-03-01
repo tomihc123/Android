@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Room</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="VISUALIZACION.LISTA">LISTA</string>
+    <string name="VISUALIZACION.ANADIR">ANADIR</string>
+    <string name="VISUALIZACION.EDITAR">EDITAR</string>
+    <string name="VISUALIZACION.EDITARCOMENTARIO">EDITARCOMENTARIO</string>
+
+</resources>

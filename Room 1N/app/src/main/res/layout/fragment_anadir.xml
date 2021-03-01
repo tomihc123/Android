@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentoAnadir"
+    android:background="@drawable/feng">
+
+    <EditText
+        android:id="@+id/nuevoNombreNovela"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_search"
+        android:hint=" Nombre"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        android:inputType="text"
+        android:focusedByDefault="false"
+        />
+
+
+    <EditText
+        android:id="@+id/nuevoDescripcionNovela"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_search"
+        android:hint=" Descripcion"
+        app:layout_constraintTop_toBottomOf="@+id/nuevoNombreNovela"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        android:inputType="text"
+        android:focusedByDefault="false"
+        />
+
+    <EditText
+        android:id="@+id/nuevoComentario1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_search"
+        android:hint=" Descripcion"
+        app:layout_constraintTop_toBottomOf="@+id/nuevoDescripcionNovela"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        android:inputType="text"
+        android:focusedByDefault="false"
+        />
+
+    <EditText
+        android:id="@+id/nuevoComentario2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_search"
+        android:hint=" Descripcion"
+        app:layout_constraintTop_toBottomOf="@+id/nuevoComentario1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        android:inputType="text"
+        android:focusedByDefault="false"
+        />
+
+    <EditText
+        android:id="@+id/autor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_search"
+        android:hint=" Descripcion"
+        app:layout_constraintTop_toBottomOf="@+id/nuevoComentario2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        android:inputType="text"
+        android:focusedByDefault="false"
+        />
+
+
+    <Button
+        android:id="@+id/botonAnadirConfirmar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/background_buttom"
+        android:text="Añadir"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/nuevoNombreNovela"
+        app:layout_constraintStart_toStartOf="@id/nuevoNombreNovela"
+        app:layout_constraintTop_toBottomOf="@id/autor" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
