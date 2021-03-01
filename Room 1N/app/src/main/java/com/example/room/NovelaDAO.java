@@ -22,6 +22,9 @@ public interface NovelaDAO {
     @Query("SELECT * FROM Comentarios WHERE idNovela = :idNovela")
     LiveData<List<Comentario>> getComentarios(int idNovela);
 
+    @Query("SELECT * FROM Comentarios")
+    LiveData<List<Comentario>> getAllComentarios();
+
     //Para insertar
     @Transaction
     @Insert(onConflict = OnConflictStrategy.IGNORE)

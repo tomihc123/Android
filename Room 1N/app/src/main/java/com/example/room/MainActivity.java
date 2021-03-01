@@ -33,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
 
         } else {
-            //TODO implementar tablet
             isSmall = false;
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameIzq, fragmentoLista).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameDrch, fragmentoAnadir).addToBackStack(null).commit();
         }
 
         novelaViewModel.getVisualizacion().observe(this, new Observer<String>() {
@@ -47,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).addToBackStack(null).commit();
                     } else  {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoDetalle).addToBackStack(null).commit();
+                    }
+                } else {
+                    if(s.equals(getResources().getString(R.string.VISUALIZACION_ANADIR))) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameDrch, fragmentoAnadir).addToBackStack(null).commit();
+                    } else if(s.equals(getResources().getString(R.string.VISUALIZACION_EDITAR))) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameDrch, fragmentoDetalle).addToBackStack(null).commit();
                     }
                 }
             }

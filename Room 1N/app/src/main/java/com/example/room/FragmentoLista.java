@@ -152,6 +152,12 @@ public class FragmentoLista extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adaptador);
 
+        novelaViewModel.obtenerComentarios().observe(getActivity(), new Observer<List<Comentario>>() {
+            @Override
+            public void onChanged(List<Comentario> comentarios) {
+                Toast.makeText(getContext(), ""+comentarios.size(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         novelaViewModel.obtenerNovelas().observe(getActivity(), new Observer<List<NovelaConComentarios>>() {
             @Override

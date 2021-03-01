@@ -15,7 +15,6 @@ public class NovelaViewModel extends AndroidViewModel {
     private LiveData<List<NovelaConComentarios>> novelas;
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
     private NovelaConComentarios novelaParaEditar;
-    private Comentario comentarioParaEditar;
 
     public NovelaViewModel(Application application) {
 
@@ -32,6 +31,8 @@ public class NovelaViewModel extends AndroidViewModel {
          return novelaRepository.obtenerComentarios(idNovela);
     }
 
+    public LiveData<List<Comentario>> obtenerComentarios() {return novelaRepository.obtenerComenAll();}
+
     public void insertar(NovelaConComentarios novela) { novelaRepository.insertar(novela); }
 
     public void insertar(Comentario comentario) { novelaRepository.insertar(comentario); }
@@ -47,11 +48,6 @@ public class NovelaViewModel extends AndroidViewModel {
     }
 
     public void actualizar(Comentario comentario) { novelaRepository.actualizar(comentario); }
-
-
-    public Comentario getComentarioParaEditar() { return comentarioParaEditar; }
-
-    public void setComentarioParaEditar(Comentario comentarioParaEditar) { this.comentarioParaEditar = comentarioParaEditar; }
 
     public MutableLiveData<String> getVisualizacion() {
         return visualizacion;

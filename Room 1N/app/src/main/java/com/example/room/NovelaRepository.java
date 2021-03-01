@@ -14,7 +14,6 @@ public class NovelaRepository {
 
     private NovelaDAO novelaDAO;
     private LiveData<List<NovelaConComentarios>> novelas;
-    private LiveData<List<Comentario>> comentarios;
 
     public NovelaRepository(Application application) {
 
@@ -29,18 +28,19 @@ public class NovelaRepository {
 
     public LiveData<List<Comentario>> obtenerComentarios(int idNovela) { return novelaDAO.getComentarios(idNovela); }
 
+    public LiveData<List<Comentario>> obtenerComenAll() { return novelaDAO.getAllComentarios(); }
+
     //Insetar
     public void insertar(NovelaConComentarios novela) { new InsertNoteAsycnTask(novelaDAO).execute(novela); }
 
     public void insertar(Comentario comentario) { new InsertComentarioAsycnTask(novelaDAO).execute(comentario); }
 
-
+    //Eliminar
     public void eliminar(Novela novela) { new DeleteNoteAsycnTask(novelaDAO).execute(novela); }
 
     public void eliminarComentario(Comentario comentario) { new DeleteComentarioAsycnTask(novelaDAO).execute(comentario); }
 
-
-
+    //Actualizar
     public void actualizar(Novela novela) { new UpdateNoteAsycnTask(novelaDAO).execute(novela); }
 
     public void actualizar(Comentario comentario) { new UpdateComentarioAsycnTask(novelaDAO).execute(comentario);}

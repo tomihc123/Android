@@ -19,9 +19,8 @@ public class ListComentarioAdapter extends RecyclerView.Adapter<ListComentarioAd
     private List<Comentario> comentarios = new ArrayList<>();
     private final OnItemClickListener listener;
 
-    public ListComentarioAdapter(OnItemClickListener onItemClickListener, List<Comentario> comentarios) {
+    public ListComentarioAdapter(OnItemClickListener onItemClickListener) {
         this.listener = onItemClickListener;
-        this.comentarios = comentarios;
     }
 
     @NonNull

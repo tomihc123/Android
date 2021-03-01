@@ -139,7 +139,7 @@ public class FragmentoDetalle extends Fragment {
                 });
 
             }
-        }, novelaViewModel.getNovelaParaEditar().getComentarios());
+        });
 
         listaComentarios.setAdapter(listComentarioAdapter);
 
