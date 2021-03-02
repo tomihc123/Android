@@ -20,9 +20,35 @@ public abstract class NovelaDataBase extends RoomDatabase {
     public static synchronized NovelaDataBase getInstance(Context context) {
 
         if(instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(), NovelaDataBase.class, "database").fallbackToDestructiveMigration().build();
+            instance = Room.databaseBuilder(context.getApplicationContext(), NovelaDataBase.class, "database").fallbackToDestructiveMigration().addCallback(roomCallBack).build();
         }
         return instance;
     }
 
+    private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
+
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+             super.onCreate(db);
+             new PopulateDatabaseAsycnTask(instance).execute();
+        }
+    };
+
+        private static class PopulateDatabaseAsycnTask extends AsyncTask<Void, Void , Void> {
+
+        private NovelaDAO novelaDAO;
+
+        public PopulateDatabaseAsycnTask(NovelaDataBase novelaDataBase) {
+            this.novelaDAO = novelaDataBase.novelaDAO();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            long idGenerada = novelaDAO.insertar(new Novela("Reverend Insanity",  R.drawable.fang, "Novela llena de accion", "Gu Zhen"));
+            Comentario comentario = new Comentario("Esta buena");
+            comentario.setIdNovela((int)idGenerada);
+            novelaDAO.insertarComentario(comentario);
+            return null;
+        }
+    }
 }

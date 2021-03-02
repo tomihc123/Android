@@ -193,6 +193,7 @@ public class FragmentoLista extends Fragment {
                         .create();
 
                 dialogo.show();
+                adaptador.setNovelas(novelaViewModel.obtenerNovelas().getValue());
 
             }
         }).attachToRecyclerView(recyclerView);
