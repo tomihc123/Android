@@ -5,11 +5,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private NovelaViewModel novelaViewModel;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -22,20 +27,46 @@ public class MainActivity extends AppCompatActivity {
         //ViewModel
         novelaViewModel = new ViewModelProvider(this).get(NovelaViewModel.class);
 
+        //SharedPreferences para gestionar si se ha mostrado el tutorial ya
+        sharedPreferences = getSharedPreferences("TUTORIAL", Context.MODE_PRIVATE);
+
         //Fragments
         final FragmentoLista fragmentoLista = new FragmentoLista();
         final FragmentoAnadir fragmentoAnadir = new FragmentoAnadir();
         final FragmentoDetalle fragmentoDetalle = new FragmentoDetalle();
+        final FragmentTutorial fragmentTutorial = new FragmentTutorial();
+        final FragmentCarga fragmentCarga = new FragmentCarga();
 
+        SharedPreferences.Editor  editor = sharedPreferences.edit();
 
-        if(findViewById(R.id.contenedorGeneral) != null) {
-            isSmall = true;
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
+        if(!sharedPreferences.getBoolean("Mostrado", false)) {
+
+            if (findViewById(R.id.contenedorGeneral) != null) {
+                isSmall = true;
+                getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentTutorial).addToBackStack(null).commit();
+
+            } else {
+                isSmall = false;
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameIzq, fragmentoLista).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameDrch, fragmentTutorial).addToBackStack(null).commit();
+            }
+
+            editor.putBoolean("Mostrado", true).commit();
+
 
         } else {
-            isSmall = false;
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameIzq, fragmentoLista).addToBackStack(null).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameDrch, fragmentoAnadir).addToBackStack(null).commit();
+
+            if (findViewById(R.id.contenedorGeneral) != null) {
+                isSmall = true;
+                getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
+
+            } else {
+                isSmall = false;
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameIzq, fragmentoLista).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameDrch, fragmentoAnadir).addToBackStack(null).commit();
+            }
+
+
         }
 
         novelaViewModel.getVisualizacion().observe(this, new Observer<String>() {

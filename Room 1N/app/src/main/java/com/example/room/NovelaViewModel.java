@@ -15,12 +15,14 @@ public class NovelaViewModel extends AndroidViewModel {
     private LiveData<List<NovelaConComentarios>> novelas;
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
     private NovelaConComentarios novelaParaEditar;
+    private boolean aCargado;
 
     public NovelaViewModel(Application application) {
 
         super(application);
         novelaRepository = new NovelaRepository(application);
         novelas = novelaRepository.obtenerNovelas();
+        aCargado = false;
     }
 
     public LiveData<List<NovelaConComentarios>> obtenerNovelas() {
@@ -63,4 +65,11 @@ public class NovelaViewModel extends AndroidViewModel {
         this.novelaParaEditar = novela;
     }
 
+    public boolean isaCargado() {
+        return aCargado;
+    }
+
+    public void setaCargado(boolean aCargado) {
+        this.aCargado = aCargado;
+    }
 }
