@@ -186,7 +186,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nombre, descripcion, autor, leerMas, editar;
-        private ImageView imagen;
+        private ImageView imagen, iconDownload;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -196,6 +196,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             autor = itemView.findViewById(R.id.autor);
             leerMas = itemView.findViewById(R.id.leerMas);
             editar = itemView.findViewById(R.id.editar);
+            iconDownload = itemView.findViewById(R.id.download);
 
             leerMas.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -208,6 +209,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(novelas.get(getAdapterPosition()), editar.getId());
+                }
+            });
+
+            iconDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(novelas.get(getAdapterPosition()), iconDownload.getId());
                 }
             });
 

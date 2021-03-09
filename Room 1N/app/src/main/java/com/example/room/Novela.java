@@ -12,12 +12,14 @@ public class Novela {
     private int imagen;
     private String descripcion;
     private String autor;
+    private String enlaceDescarga;
 
-    public Novela(String nombre, int imagen, String descripcion, String autor) {
+    public Novela(String nombre, int imagen, String descripcion, String autor, String enlaceDescarga) {
         this.nombre = nombre;
         this.imagen = imagen;
         this.descripcion = descripcion;
         this.autor = autor;
+        this.enlaceDescarga = enlaceDescarga;
     }
 
     public String getAutor() {
@@ -58,5 +60,13 @@ public class Novela {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getEnlaceDescarga() {
+        return enlaceDescarga;
+    }
+
+    public void setEnlaceDescarga(String enlaceDescarga) {
+        this.enlaceDescarga = enlaceDescarga;
     }
 }

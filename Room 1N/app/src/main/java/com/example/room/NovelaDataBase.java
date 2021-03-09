@@ -44,7 +44,7 @@ public abstract class NovelaDataBase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            long idGenerada = novelaDAO.insertar(new Novela("Reverend Insanity",  R.drawable.fang, "Novela llena de accion", "Gu Zhen"));
+            long idGenerada = novelaDAO.insertar(new Novela("Reverend Insanity",  R.drawable.fang, "Novela llena de accion", "Gu Zhen", "https://download941.mediafire.com/9e2no0msywzg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
             Comentario comentario = new Comentario("Esta buena");
             comentario.setIdNovela((int)idGenerada);
             novelaDAO.insertarComentario(comentario);

@@ -97,7 +97,7 @@ public class FragmentoAnadir extends Fragment {
                         Comentario comentario2 = new Comentario(nuevoComentario1.getText().toString());
                         comentarios.add(comentario2);
                     }
-                    novelaViewModel.insertar(new NovelaConComentarios(new Novela(nuevoNombre.getText().toString(), R.drawable.fang, nuevaDescripcion.getText().toString(), autor.getText().toString()), comentarios));
+                    novelaViewModel.insertar(new NovelaConComentarios(new Novela(nuevoNombre.getText().toString(), R.drawable.fang, nuevaDescripcion.getText().toString(), autor.getText().toString(), "https://download941.mediafire.com/9e2no0msywzg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"), comentarios));
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_LISTA));
                 }
             }
