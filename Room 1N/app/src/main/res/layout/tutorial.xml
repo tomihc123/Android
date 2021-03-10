@@ -9,12 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/wave"
-        app:mwhStartColor="#A5FFEC"
+        app:mwhStartColor="#00EEFF"
         app:mwhCloseColor="#33FFD4"
         app:mwhGradientAngle="45"
         app:mwhWaveHeight="40dp"
         app:mwhIsRunning="true"
-        app:mwhVelocity="1"
+        app:mwhVelocity="2"
         app:mwhProgress="1"
         />
 

@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         final FragmentoAnadir fragmentoAnadir = new FragmentoAnadir();
         final FragmentoDetalle fragmentoDetalle = new FragmentoDetalle();
         final FragmentTutorial fragmentTutorial = new FragmentTutorial();
-        final FragmentCarga fragmentCarga = new FragmentCarga();
 
         SharedPreferences.Editor  editor = sharedPreferences.edit();
 

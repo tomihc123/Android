@@ -15,14 +15,12 @@ public class NovelaViewModel extends AndroidViewModel {
     private LiveData<List<NovelaConComentarios>> novelas;
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
     private NovelaConComentarios novelaParaEditar;
-    private boolean aCargado;
+
 
     public NovelaViewModel(Application application) {
-
         super(application);
         novelaRepository = new NovelaRepository(application);
         novelas = novelaRepository.obtenerNovelas();
-        aCargado = false;
     }
 
     public LiveData<List<NovelaConComentarios>> obtenerNovelas() {
@@ -36,6 +34,8 @@ public class NovelaViewModel extends AndroidViewModel {
     public LiveData<List<Comentario>> obtenerComentarios() {return novelaRepository.obtenerComenAll();}
 
     public void insertar(NovelaConComentarios novela) { novelaRepository.insertar(novela); }
+
+    public void insertar(Novela novela) { novelaRepository.insertar(novela);}
 
     public void insertar(Comentario comentario) { novelaRepository.insertar(comentario); }
 
@@ -65,11 +65,5 @@ public class NovelaViewModel extends AndroidViewModel {
         this.novelaParaEditar = novela;
     }
 
-    public boolean isaCargado() {
-        return aCargado;
-    }
 
-    public void setaCargado(boolean aCargado) {
-        this.aCargado = aCargado;
-    }
 }

@@ -8,11 +8,10 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,8 +24,10 @@ public class FragmentoAnadir extends Fragment {
     private NovelaViewModel novelaViewModel;
 
     //Widgets para editar
-    private EditText nuevoNombre, nuevaDescripcion, nuevoComentario, nuevoComentario1, autor;
-    private Button botonAnadirNovela;
+    private EditText nuevoNombre, nuevaDescripcion, autor, nuevoEnlace;
+    private TextView botonAnadirNovela;
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,30 +76,21 @@ public class FragmentoAnadir extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_anadir, container, false);
+        View view = inflater.inflate(R.layout.fragmento_anadir, container, false);
         nuevoNombre = view.findViewById(R.id.nuevoNombreNovela);
         nuevaDescripcion = view.findViewById(R.id.nuevoDescripcionNovela);
         autor = view.findViewById(R.id.autor);
+        nuevoEnlace = view.findViewById(R.id.enlaceDescarga);
         botonAnadirNovela = view.findViewById(R.id.botonAnadirConfirmar);
-
-        nuevoComentario = view.findViewById(R.id.nuevoComentario1);
-        nuevoComentario1 = view.findViewById(R.id.nuevoComentario2);
 
         botonAnadirNovela.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!nuevoNombre.getText().toString().isEmpty() && !nuevaDescripcion.getText().toString().isEmpty() && !autor.getText().toString().isEmpty()) {
-                    List<Comentario> comentarios = new ArrayList<>();
-                    if(!nuevoComentario.getText().toString().isEmpty()) {
-                        Comentario comentario1 = new Comentario(nuevoComentario.getText().toString());
-                        comentarios.add(comentario1);
-                    }
-                    if(!nuevoComentario1.getText().toString().isEmpty()) {
-                        Comentario comentario2 = new Comentario(nuevoComentario1.getText().toString());
-                        comentarios.add(comentario2);
-                    }
-                    novelaViewModel.insertar(new NovelaConComentarios(new Novela(nuevoNombre.getText().toString(), R.drawable.fang, nuevaDescripcion.getText().toString(), autor.getText().toString(), "https://download941.mediafire.com/9e2no0msywzg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"), comentarios));
+                    novelaViewModel.insertar(new Novela(nuevoNombre.getText().toString(), R.drawable.cafe, nuevaDescripcion.getText().toString(), autor.getText().toString(), nuevoEnlace.getText().toString()));
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_LISTA));
+                } else {
+                    Toast.makeText(getContext(), "Los campos nombres, descripcion y autor deben ser rellenados", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -44,10 +44,18 @@ public abstract class NovelaDataBase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            long idGenerada = novelaDAO.insertar(new Novela("Reverend Insanity",  R.drawable.fang, "Novela llena de accion", "Gu Zhen", "https://download941.mediafire.com/9e2no0msywzg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
-            Comentario comentario = new Comentario("Esta buena");
+
+            //Primera novela con id generado las demas sin comentarios
+            long idGenerada = novelaDAO.insertar(new Novela("Reverend Insanity",  R.drawable.fangyuan, "Novela llena de accion", "Gu Zhen", "http://download941.mediafire.com/neqneahrh5bg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
+            Comentario comentario = new Comentario("Esta muy buena esta novela");
             comentario.setIdNovela((int)idGenerada);
             novelaDAO.insertarComentario(comentario);
+
+            novelaDAO.insertar(new Novela("Martial Peak", R.drawable.martialpeak, "Novela llena de secretos, aunque corta", "Momo", "http://download941.mediafire.com/neqneahrh5bg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
+            novelaDAO.insertar(new Novela("I shall seal the heavens", R.drawable.shall, "Esta novela es una de las mas populares en los foros", "Er Gen", "http://download941.mediafire.com/neqneahrh5bg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
+            novelaDAO.insertar(new Novela("A record of a mortal journey to immortality", R.drawable.po, "Nos cuenta una historia de como un mortal llega a ser inmortal", "Fu xi", "http://download941.mediafire.com/neqneahrh5bg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
+            novelaDAO.insertar(new Novela("Heavenly jewel change", R.drawable.perless, "Adentrate en un mundo de fantasia y magia", "Feng Qian", "http://download941.mediafire.com/neqneahrh5bg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
+            novelaDAO.insertar(new Novela("Tales Of Demonds And Gods", R.drawable.talesofdemonds, "El protagonista viaja 500 años al pasado y reparara sus errores en la vida", "Xian Xu ", "http://download941.mediafire.com/neqneahrh5bg/bqnfd6je1ugj919/Reverend+Insanity+%5B01-100%5D.pdf"));
             return null;
         }
     }

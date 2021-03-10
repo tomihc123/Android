@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ViewPagerItem item = items.get(position);
         holder.titulo.setText(item.getTitulo());
+        holder.lottieAnimationView.setAnimation(item.getRutaAnimacion());
         holder.descripcion.setText(item.getDescripcion());
-        holder.imagen.setImageResource(item.getImagen());
+
     }
 
     @Override
@@ -45,13 +48,13 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView titulo, descripcion;
-        private ImageView imagen;
+        private LottieAnimationView lottieAnimationView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.titulo = itemView.findViewById(R.id.pagerName);
             this.descripcion = itemView.findViewById(R.id.pagerDescripcion);
-            this.imagen = itemView.findViewById(R.id.pagerImg);
+            lottieAnimationView = itemView.findViewById(R.id.animation);
         }
 
     }

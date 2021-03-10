@@ -3,12 +3,12 @@ package com.example.room;
 public class ViewPagerItem {
 
     private String titulo;
-    private int imagen;
+    private String rutaAnimacion;
     private String descripcion;
 
-    public ViewPagerItem(String titulo, int imagen, String descripcion) {
+    public ViewPagerItem(String titulo, String rutaAnimacion, String descripcion) {
         this.titulo = titulo;
-        this.imagen = imagen;
+        this.rutaAnimacion = rutaAnimacion;
         this.descripcion = descripcion;
     }
 
@@ -20,12 +20,12 @@ public class ViewPagerItem {
         this.titulo = titulo;
     }
 
-    public int getImagen() {
-        return imagen;
+    public String getRutaAnimacion() {
+        return rutaAnimacion;
     }
 
-    public void setImagen(int imagen) {
-        this.imagen = imagen;
+    public void setRutaAnimacion(String rutaAnimacion) {
+        this.rutaAnimacion = rutaAnimacion;
     }
 
     public String getDescripcion() {

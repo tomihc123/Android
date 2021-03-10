@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.button.MaterialButton;
 import com.scwang.wave.MultiWaveHeader;
 
@@ -125,9 +126,9 @@ public class FragmentTutorial extends Fragment {
 
         List<ViewPagerItem> viewPagerItemList = new ArrayList<>();
 
-        viewPagerItemList.add(new ViewPagerItem("Gestiona las novelas",  R.drawable.login, "Podras modificar, anadir, eliminar, filtrar las novelas de la aplicacion"));
-        viewPagerItemList.add(new ViewPagerItem("Gestiona sus opiniones",  R.drawable.chat, "Anade, elimina, y modifica los comentarios asociados a su novela"));
-        viewPagerItemList.add(new ViewPagerItem("Descarga las novelas",  R.drawable.signup, "Verifica tu identidad medienta la huella biometrica para poder descargar la novela que mas te guste"));
+        viewPagerItemList.add(new ViewPagerItem("Gestiona las novelas",  "read.json", "Podras modificar, anadir, eliminar, filtrar las novelas de la aplicacion"));
+        viewPagerItemList.add(new ViewPagerItem("Gestiona sus opiniones",  "speak.json", "Anade, elimina, y modifica los comentarios asociados a su novela"));
+        viewPagerItemList.add(new ViewPagerItem("Descarga las novelas",  "download.json", "Verifica tu identidad medienta la huella biometrica para poder descargar la novela que mas te guste"));
 
         viewPagerAdapter = new ViewPagerAdapter(viewPagerItemList);
 

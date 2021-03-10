@@ -2,11 +2,8 @@ package com.example.room;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.sax.TextElementListener;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
-import androidx.loader.content.AsyncTaskLoader;
 
 import java.util.List;
 
@@ -31,9 +28,11 @@ public class NovelaRepository {
     public LiveData<List<Comentario>> obtenerComenAll() { return novelaDAO.getAllComentarios(); }
 
     //Insetar
-    public void insertar(NovelaConComentarios novela) { new InsertNoteAsycnTask(novelaDAO).execute(novela); }
+    public void insertar(NovelaConComentarios novela) { new InsertNoteWithComents(novelaDAO).execute(novela); }
 
     public void insertar(Comentario comentario) { new InsertComentarioAsycnTask(novelaDAO).execute(comentario); }
+
+    public void insertar(Novela novela) { new InsertNoteAsycnTask(novelaDAO).execute(novela); }
 
     //Eliminar
     public void eliminar(Novela novela) { new DeleteNoteAsycnTask(novelaDAO).execute(novela); }
@@ -46,11 +45,11 @@ public class NovelaRepository {
     public void actualizar(Comentario comentario) { new UpdateComentarioAsycnTask(novelaDAO).execute(comentario);}
 
 
-    private static class InsertNoteAsycnTask extends AsyncTask<NovelaConComentarios, Void, Void> {
+    private static class InsertNoteWithComents extends AsyncTask<NovelaConComentarios, Void, Void> {
 
         private NovelaDAO novelaDAO;
 
-        private InsertNoteAsycnTask(NovelaDAO novelaDAO) {
+        private InsertNoteWithComents(NovelaDAO novelaDAO) {
             this.novelaDAO = novelaDAO;
         }
 
@@ -62,6 +61,23 @@ public class NovelaRepository {
                 comentario.setIdNovela((int)idGenerada);
             }
             novelaDAO.insetarComentarios(novelas[0].getComentarios());
+            return null;
+        }
+    }
+
+
+
+    private static class InsertNoteAsycnTask extends AsyncTask<Novela, Void, Void> {
+
+        private NovelaDAO novelaDAO;
+
+        public InsertNoteAsycnTask(NovelaDAO novelaDAO) {
+            this.novelaDAO = novelaDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Novela... novelas) {
+            novelaDAO.insertar(novelas[0]);
             return null;
         }
     }

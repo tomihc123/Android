@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp"
@@ -15,6 +17,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:adjustViewBounds="true"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
 
     <TextView
         android:layout_marginTop="20dp"
@@ -33,7 +43,7 @@
         android:id="@+id/pagerDescripcion"
         android:gravity="center"
         android:textColor="#000"
-        android:textSize="10sp"
+        android:textSize="15sp"
         android:textStyle="bold"/>
 
 

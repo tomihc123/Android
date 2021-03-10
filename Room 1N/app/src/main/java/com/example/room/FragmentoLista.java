@@ -314,24 +314,25 @@ public class FragmentoLista extends Fragment {
 
     private void descargarNovela(String enlace, String nombre) {
 
-        Uri downloadUri = Uri.parse(enlace);
-        DownloadManager manager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+            Uri downloadUri = Uri.parse(enlace);
+            DownloadManager manager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
 
-        try {
+            try {
 
-            if(manager != null) {
+                if (manager != null) {
 
-                DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).setTitle(nombre).setDescription("Descargando... "+nombre).setAllowedOverMetered(true).setAllowedOverRoaming(true).setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED).setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, nombre).setMimeType(MimeTypeMap.getSingleton().getExtensionFromMimeType(getActivity().getContentResolver().getType(Uri.parse(enlace))));
-                manager.enqueue(request);
-                Toast.makeText(getActivity(), "Download started!!", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(enlace));
+                    DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).setTitle(nombre).setDescription("Descargando... " + nombre).setAllowedOverMetered(true).setAllowedOverRoaming(true).setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED).setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, nombre).setMimeType(MimeTypeMap.getSingleton().getExtensionFromMimeType(getActivity().getContentResolver().getType(Uri.parse(enlace))));
+                    manager.enqueue(request);
+                    Toast.makeText(getActivity(), "Download started!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(enlace));
+                }
+
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "Enlace no valido", Toast.LENGTH_SHORT).show();
             }
 
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), "Algo malo paso", Toast.LENGTH_SHORT).show();
         }
 
-    }
 }
