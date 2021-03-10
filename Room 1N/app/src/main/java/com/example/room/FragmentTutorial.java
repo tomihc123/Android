@@ -1,5 +1,6 @@
 package com.example.room;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.android.material.button.MaterialButton;
+import com.scwang.wave.MultiWaveHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +44,7 @@ public class FragmentTutorial extends Fragment {
 
     private MaterialButton botton;
 
-
     private NovelaViewModel novelaViewModel;
-
 
     public FragmentTutorial() {
         // Required empty public constructor
@@ -88,6 +88,7 @@ public class FragmentTutorial extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.tutorial, container, false);
 
+
         botton = v.findViewById(R.id.botonViewPager);
         indicadoresViewPager = v.findViewById(R.id.viewPagerIndicador);
 
@@ -124,9 +125,9 @@ public class FragmentTutorial extends Fragment {
 
         List<ViewPagerItem> viewPagerItemList = new ArrayList<>();
 
-        viewPagerItemList.add(new ViewPagerItem("Gestiona las novelas",  R.drawable.fang, "Podras modificar, anadir, eliminar, filtrar las novelas de la aplicacion"));
-        viewPagerItemList.add(new ViewPagerItem("Gestiona sus opiniones",  R.drawable.fang, "Anade, elimina, y modifica los comentarios asociados a su novela"));
-        viewPagerItemList.add(new ViewPagerItem("Descarga las novelas",  R.drawable.fang, "Verifica tu identidad medienta la huella biometrica para poder descargar la novela que mas te guste"));
+        viewPagerItemList.add(new ViewPagerItem("Gestiona las novelas",  R.drawable.login, "Podras modificar, anadir, eliminar, filtrar las novelas de la aplicacion"));
+        viewPagerItemList.add(new ViewPagerItem("Gestiona sus opiniones",  R.drawable.chat, "Anade, elimina, y modifica los comentarios asociados a su novela"));
+        viewPagerItemList.add(new ViewPagerItem("Descarga las novelas",  R.drawable.signup, "Verifica tu identidad medienta la huella biometrica para poder descargar la novela que mas te guste"));
 
         viewPagerAdapter = new ViewPagerAdapter(viewPagerItemList);
 

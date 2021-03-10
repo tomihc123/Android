@@ -49,7 +49,6 @@
             android:layout_weight="1"
             android:background="@null"
             android:hint=" Buscar"
-            android:focusable="false"
             android:inputType="text"
             android:focusableInTouchMode="true"
             />

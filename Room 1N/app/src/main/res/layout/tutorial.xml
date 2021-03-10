@@ -4,6 +4,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.scwang.wave.MultiWaveHeader
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/wave"
+        app:mwhStartColor="#A5FFEC"
+        app:mwhCloseColor="#33FFD4"
+        app:mwhGradientAngle="45"
+        app:mwhWaveHeight="40dp"
+        app:mwhIsRunning="true"
+        app:mwhVelocity="1"
+        app:mwhProgress="1"
+        />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/botonViewPager"
         android:layout_width="wrap_content"
