@@ -191,13 +191,13 @@ public class FragmentoLista extends Fragment {
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                                 if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                    descargarNovela(novela.getNovela());
+                                    descargarNovela(novela.getNovela().getEnlaceDescarga(), novela.getNovela().getNombre());
                                 } else {
-                                    requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1001);
+                                    requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, novela.getNovela().getEnlaceDescarga(), novela.getNovela().getNombre()}, 1001);
                                 }
 
                             } else {
-                                descargarNovela(novela.getNovela());
+                                descargarNovela(novela.getNovela().getEnlaceDescarga(), novela.getNovela().getNombre());
                             }
                         }
 
@@ -304,7 +304,7 @@ public class FragmentoLista extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 1001) {
              if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                descargarNovela(permissions[1], permissions[2]);
              } else {
                  Toast.makeText(getActivity(), "Permiso denegado", Toast.LENGTH_SHORT).show();
              }
@@ -312,9 +312,9 @@ public class FragmentoLista extends Fragment {
         }
     }
 
-    private void descargarNovela(Novela novela) {
+    private void descargarNovela(String enlace, String nombre) {
 
-        Uri downloadUri = Uri.parse(novela.getEnlaceDescarga());
+        Uri downloadUri = Uri.parse(enlace);
         DownloadManager manager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
 
         try {
@@ -322,11 +322,11 @@ public class FragmentoLista extends Fragment {
             if(manager != null) {
 
                 DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).setTitle(novela.getNombre()).setDescription("Descargando... "+novela.getNombre()).setAllowedOverMetered(true).setAllowedOverRoaming(true).setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED).setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, novela.getNombre()).setMimeType(MimeTypeMap.getSingleton().getExtensionFromMimeType(getActivity().getContentResolver().getType(Uri.parse(novela.getEnlaceDescarga()))));
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).setTitle(nombre).setDescription("Descargando... "+nombre).setAllowedOverMetered(true).setAllowedOverRoaming(true).setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED).setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, nombre).setMimeType(MimeTypeMap.getSingleton().getExtensionFromMimeType(getActivity().getContentResolver().getType(Uri.parse(enlace))));
                 manager.enqueue(request);
                 Toast.makeText(getActivity(), "Download started!!", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(novela.getEnlaceDescarga()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(enlace));
             }
 
         } catch (Exception e) {
