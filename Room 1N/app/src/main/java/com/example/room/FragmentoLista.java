@@ -35,6 +35,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.AdapterViewAnimator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.lang.reflect.Executable;
@@ -111,23 +112,28 @@ public class FragmentoLista extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lista, container, false);
 
+        //Para gestionar los clicks en el recycler view
         adaptador = new ListAdapter(new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(NovelaConComentarios novela, int id) {
+                //Si la vista que se ha pulsado en el recycler view es para leer mas
                 if(id == R.id.leerMas) {
                     novelaViewModel.setNovelaParaEditar(novela);
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_EDITAR));
                 }
-
+                //Si se ha pulsado para editar creamos un alert dialog
                 if(id == R.id.editar) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    //Lo inflamer con nuestro layout
                     View view = getLayoutInflater().inflate(R.layout.edit_dialog, null);
+                    //Encontramos los campos por id
                     final EditText nombreNovelaEditar = view.findViewById(R.id.nombreNovelaEditar);
                     final EditText descripcionNovelaEditar = view.findViewById(R.id.descripcionNovelaEditar);
                     final EditText autorNovelaEditar = view.findViewById(R.id.autorNovelaEditar);
                     final Button confirmarEditar = view.findViewById(R.id.botonEditarConfirmar);
                     final Button cancelarEditar = view.findViewById(R.id.botonEditarCancelar);
 
+                    //Ponemos por defecto los datos de la novela que se quiere editar
                     nombreNovelaEditar.setText(novela.getNovela().getNombre());
                     descripcionNovelaEditar.setText(novela.getNovela().getDescripcion());
                     autorNovelaEditar.setText(novela.getNovela().getAutor());
@@ -144,11 +150,26 @@ public class FragmentoLista extends Fragment {
                                 novela.getNovela().setNombre(nombreNovelaEditar.getText().toString());
                                 novela.getNovela().setDescripcion(descripcionNovelaEditar.getText().toString());
                                 novela.getNovela().setAutor(autorNovelaEditar.getText().toString());
+                                //Actualizamos la novela con los datos nuevo, (la id de la novela sigue siendo la misma)
                                 novelaViewModel.actualizar(novela.getNovela());
                                 dialog.dismiss();
+
+                            } else {
+
+                                    LinearLayout linearContenedorEditar = view.findViewById(R.id.linearLayoutEditar);
+
+                                    for(int i = 0; i < linearContenedorEditar.getChildCount() - 1; i++) {
+
+                                        if(((android.widget.EditText)linearContenedorEditar.getChildAt(i)).getText().toString().isEmpty()) {
+                                            ((EditText)linearContenedorEditar.getChildAt(i)).setError("No puede estar vacio");
+                                        }
+
+                                    }
+                                }
+
                             }
-                        }
-                    });
+                        });
+
 
                     cancelarEditar.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -159,10 +180,12 @@ public class FragmentoLista extends Fragment {
 
                 }
 
+                //Si se quiere descargar la novela
                 if(id == R.id.download) {
 
                     BiometricManager biometricManager = BiometricManager.from(getActivity());
 
+                    //Sirve para gestionar se se puede acceder con la huella en este dispositivo, si no tiene hardware para eso, si no tiene ninguna huella salvada...
                     switch (biometricManager.canAuthenticate()) {
 
                         case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
@@ -180,6 +203,7 @@ public class FragmentoLista extends Fragment {
 
                     Executor executor = ContextCompat.getMainExecutor(getActivity());
 
+                    //Aqui se recogen los resultados de la huella, solo nos interesa cuando se valida la huella
                     BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
                         @Override
                         public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
@@ -190,9 +214,11 @@ public class FragmentoLista extends Fragment {
                         public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
+                                //Si se tienen permisos ya la descarga directamente
                                 if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                     descargarNovela(novela.getNovela().getEnlaceDescarga(), novela.getNovela().getNombre());
                                 } else {
+                                    //Si no pide permisos le pasamos la novela y en enlace para poder descargar directamente cuando se obtienen, en vez de tener que dar permisos y tener que verificar otra vez
                                     requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, novela.getNovela().getEnlaceDescarga(), novela.getNovela().getNombre()}, 1001);
                                 }
 
@@ -208,6 +234,7 @@ public class FragmentoLista extends Fragment {
                     });
 
 
+                    //Editamos el dialog de la huella
                     final BiometricPrompt.PromptInfo promptInfo =  new BiometricPrompt.PromptInfo.Builder().setTitle("Descargar "+novela.getNovela().getNombre()).setDescription("Utiliza tu huella para descargar").setNegativeButtonText("Cancelar").build();
 
                     biometricPrompt.authenticate(promptInfo);
@@ -215,7 +242,7 @@ public class FragmentoLista extends Fragment {
                 }
 
             }
-        });
+        }, getActivity());
 
         recyclerView = v.findViewById(R.id.lista);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -223,6 +250,7 @@ public class FragmentoLista extends Fragment {
         recyclerView.setAdapter(adaptador);
 
 
+        //Observamos los datos de la base de datos, en cuanto cambie se actualiza la lista
         novelaViewModel.obtenerNovelas().observe(getActivity(), new Observer<List<NovelaConComentarios>>() {
             @Override
             public void onChanged(List<NovelaConComentarios> novelas) {
@@ -230,6 +258,7 @@ public class FragmentoLista extends Fragment {
             }
         });
 
+        //El item touch helper sirve para gestionar los view holder se un recycler viw, este se lo indicamos nosotros cual es en el attatch to recycler view
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -238,15 +267,18 @@ public class FragmentoLista extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                //Si se arrasta hacia izquiera o derecha se muestra un dialod de si se quiere eliminar la novela
                 AlertDialog dialogo = new AlertDialog
                         .Builder(getActivity())
                         .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //Obtenemos la novela en la posicion de ese view holder
                                 novelaViewModel.eliminar(adaptador.getItemAtPosition(viewHolder.getAdapterPosition()));
                             }
                         })
                         .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            //Si se cancela que se sigua mostrando todas las novelas
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 adaptador.setNovelas(novelaViewModel.obtenerNovelas().getValue());
@@ -257,6 +289,7 @@ public class FragmentoLista extends Fragment {
                         .create();
 
                 dialogo.show();
+                //Si se ha salido fuera del dialog sin pulsar cancelar, tambien debemos mostrar las novelas como estaban
                 adaptador.setNovelas(novelaViewModel.obtenerNovelas().getValue());
 
             }
@@ -277,6 +310,7 @@ public class FragmentoLista extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                //Creamos un arraylist aux para el filtro, meteremos las novelas con el nombre que coincidan con lo que ponemos en text que se le pasa por parametro
                 ArrayList<NovelaConComentarios> filtro = new ArrayList<>();
                 for(NovelaConComentarios novela: novelaViewModel.obtenerNovelas().getValue()) {
 
@@ -299,11 +333,13 @@ public class FragmentoLista extends Fragment {
         return v;
     }
 
+    //Si se han obtenido permisos
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 1001) {
              if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                 //Aqui indicamos el que novela
                 descargarNovela(permissions[1], permissions[2]);
              } else {
                  Toast.makeText(getActivity(), "Permiso denegado", Toast.LENGTH_SHORT).show();

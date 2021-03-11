@@ -132,14 +132,17 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 package com.example.room;
 
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -149,9 +152,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private List<NovelaConComentarios> novelas = new ArrayList<>();
     private final OnItemClickListener listener;
+    private final Context context;
 
-    public ListAdapter(OnItemClickListener onItemClickListener) {
+    public ListAdapter(OnItemClickListener onItemClickListener, Context context) {
         this.listener = onItemClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -168,6 +173,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.imagen.setImageResource(novela.getImagen());
         holder.descripcion.setText(novela.getDescripcion());
         holder.autor.setText(novela.getAutor());
+        holder.cardView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transaction));
     }
 
     public void setNovelas(List<NovelaConComentarios> novelas) {
@@ -187,6 +193,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nombre, descripcion, autor, leerMas, editar;
         private ImageView imagen, iconDownload;
+        private CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -197,6 +204,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             leerMas = itemView.findViewById(R.id.leerMas);
             editar = itemView.findViewById(R.id.editar);
             iconDownload = itemView.findViewById(R.id.download);
+            cardView = itemView.findViewById(R.id.cardViwLista);
 
             leerMas.setOnClickListener(new View.OnClickListener() {
                 @Override

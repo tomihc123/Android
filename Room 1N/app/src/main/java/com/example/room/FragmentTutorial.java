@@ -124,6 +124,8 @@ public class FragmentTutorial extends Fragment {
 
     private void rellenarViewPager() {
 
+        //Para cargar los datos, siempre van a ser los mismos y no se van a cambiar luego no veo necesario meterlo en la base de datos
+
         List<ViewPagerItem> viewPagerItemList = new ArrayList<>();
 
         viewPagerItemList.add(new ViewPagerItem("Gestiona las novelas",  "read.json", "Podras modificar, anadir, eliminar, filtrar las novelas de la aplicacion"));
@@ -135,7 +137,7 @@ public class FragmentTutorial extends Fragment {
     }
 
     private void viewPagerIndicadores() {
-
+        //Estamos poniendo cuantos "puntitos" del view pager va a ver dependiendo del numero de paginas del view pager
         ImageView[] indicadores = new ImageView[viewPagerAdapter.getItemCount()];
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
           ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
@@ -152,8 +154,10 @@ public class FragmentTutorial extends Fragment {
     }
 
 
+    //Este metodo sirve para ir indicando a los puntitos del tutorial en que pagina del view page se encuentra, para colorearla
     private void coloresIndicadoresActual(int indice) {
 
+        //Obtenemos cuantos "puntitos" hay
         int hijos =  indicadoresViewPager.getChildCount();
 
         for(int i = 0; i < hijos; i++) {
@@ -161,12 +165,15 @@ public class FragmentTutorial extends Fragment {
             ImageView imageView = (ImageView) indicadoresViewPager.getChildAt(i);
 
             if(i == indice) {
+                //Si el indice del view pager es igual se pone en azul
                 imageView.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.indicador_view_pager));
             } else {
+                //Los demas en gris
                 imageView.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.indicador_view_pager_inactivo));
             }
 
         }
+        //Si se encuentra en la ultima pagina del view pager ponemos empezar para poder trabajar
         if(indice == viewPagerAdapter.getItemCount() - 1) {
             botton.setText("Empezar");
         } else {

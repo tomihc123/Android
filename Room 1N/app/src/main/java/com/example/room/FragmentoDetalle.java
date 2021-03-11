@@ -128,6 +128,8 @@ public class FragmentoDetalle extends Fragment {
                             comentario.setTexto(textoComentarioEditar.getText().toString());
                             novelaViewModel.actualizar(comentario);
                             dialog.dismiss();
+                        } else {
+                            textoComentarioEditar.setError("No puede estar vacio");
                         }
                     }
                 });
@@ -191,6 +193,8 @@ public class FragmentoDetalle extends Fragment {
                     comentario.setIdNovela(novelaViewModel.getNovelaParaEditar().getNovela().getId());
                     novelaViewModel.insertar(comentario);
                     anadirComentario.setText("");
+                } else {
+                    anadirComentario.setError("No puede estar vacio");
                 }
             }
         });

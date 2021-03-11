@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Para saber si es una tablet
         final boolean isSmall;
 
         //ViewModel
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentoDetalle fragmentoDetalle = new FragmentoDetalle();
         final FragmentTutorial fragmentTutorial = new FragmentTutorial();
 
+        //Guardamos una clave valor para ver si ya se vio el tutorial de inicio
         SharedPreferences.Editor  editor = sharedPreferences.edit();
 
         if(!sharedPreferences.getBoolean("Mostrado", false)) {
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        //Observmo los cambis que hay entre fragments
         novelaViewModel.getVisualizacion().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {

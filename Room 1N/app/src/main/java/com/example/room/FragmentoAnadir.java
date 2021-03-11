@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,7 +91,15 @@ public class FragmentoAnadir extends Fragment {
                     novelaViewModel.insertar(new Novela(nuevoNombre.getText().toString(), R.drawable.cafe, nuevaDescripcion.getText().toString(), autor.getText().toString(), nuevoEnlace.getText().toString()));
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_LISTA));
                 } else {
-                    Toast.makeText(getContext(), "Los campos nombres, descripcion y autor deben ser rellenados", Toast.LENGTH_SHORT).show();
+                    LinearLayout linearContenedorEdits = view.findViewById(R.id.linearLayout);
+
+                    for(int i = 1; i < linearContenedorEdits.getChildCount() - 1; i++) {
+
+                        if(((com.google.android.material.textfield.TextInputEditText)linearContenedorEdits.getChildAt(i)).getText().toString().isEmpty()) {
+                            ((com.google.android.material.textfield.TextInputEditText)linearContenedorEdits.getChildAt(i)).setError("No puede estar vacio");
+                        }
+
+                    }
                 }
             }
         });
