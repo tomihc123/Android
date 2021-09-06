@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Novelex</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="VISUALIZACION.LISTA">LISTA</string>
+    <string name="VISUALIZACION.ANADIR">ANADIR</string>
+    <string name="VISUALIZACION.EDITAR">EDITAR</string>
+    <string name="VISUALIZACION.EDITARCOMENTARIO">EDITARCOMENTARIO</string>
+    <string name="rellearNombre">Porfavor ingrese el nombre</string>
+    <string name="rellenarDescrpcion">Porfavor ingrese la descripcion</string>
+    <string name="rellenarAutor">Porfavor ingrese el autor</string>
+
+</resources>
