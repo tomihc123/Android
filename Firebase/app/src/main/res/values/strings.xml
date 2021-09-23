@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Novelex</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="VISUALIZACION.LISTA">LISTA</string>
+    <string name="VISUALIZACION.ANADIR">ANADIR</string>
+    <string name="VISUALIZACION.EDITAR">EDITAR</string>
+    <string name="VISUALIZACION.EDITARCOMENTARIO">EDITARCOMENTARIO</string>
+    <string name="VISUALIZACION.IRALLOGIN">IRALLOGIN</string>
+    <string name="VISUALIZACION.IRAREGISTER">IRAREGISTER</string>
+
+
+    <string name="rellearNombre">Porfavor ingrese el nombre</string>
+    <string name="rellenarDescrpcion">Porfavor ingrese la descripcion</string>
+    <string name="rellenarAutor">Porfavor ingrese el autor</string>
+
+    <string name="sin_cuenta">¿No tienes cuenta?</string>
+    <string name="olvidar">¿Olvidaste la contraseña? Pincha aqui</string>
+    <string name="ya_tiene_cuenta">¿Ya tienes cuenta?</string>
+
+</resources>
