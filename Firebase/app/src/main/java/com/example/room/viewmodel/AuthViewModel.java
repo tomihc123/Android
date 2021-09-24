@@ -43,8 +43,8 @@ public class AuthViewModel extends AndroidViewModel {
 
     }
 
-    public void register(String email, String pass) {
-        authRepository.register(email, pass);
+    public void register(String username, String email, String pass) {
+        authRepository.register(username, email, pass);
     }
 
     public void signIn(String email, String pass) {

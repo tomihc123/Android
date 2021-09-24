@@ -92,7 +92,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && !nombreUsuario.getText().toString().isEmpty()) {
-                    authViewModel.register(email.getText().toString(), password.getText().toString()); //TODO enviar objeto usuario
+                    authViewModel.register(nombreUsuario.getText().toString(), email.getText().toString(), password.getText().toString()); //TODO enviar objeto usuario
                 }
             }
         });
