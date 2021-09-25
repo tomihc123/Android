@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,17 +24,22 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.room.Model.Novela;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +65,12 @@ public class FragmentoLista extends Fragment {
     //Widgets
     private Button botonAnadir;
     private EditText textoFiltro;
-    private TextView logout; //Cambiar
+    private TextView username;
+    private ImageView imageProfile;
+    private MaterialToolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -110,6 +122,39 @@ public class FragmentoLista extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lista, container, false);
+
+
+        toolbar = v.findViewById(R.id.topbar);
+        drawerLayout = v.findViewById(R.id.drawer_layout);
+        navigationView = v.findViewById(R.id.navigation_view);
+
+       // setDataUserOnNavigationDrawer();
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        Toast.makeText(getContext(), "Home is clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_settings:
+                        Toast.makeText(getContext(), "Settings is clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_logout:
+                        authViewModel.signOut();
+                        break;
+                }
+                return true;
+            }
+        });
 
         //Para gestionar los clicks en el recycler view
         adaptador = new ListAdapter(new ListAdapter.OnItemClickListener() {
@@ -324,21 +369,13 @@ public class FragmentoLista extends Fragment {
         });
 
 
-        botonAnadir = v.findViewById(R.id.botonAnadir);
+      /*  botonAnadir = v.findViewById(R.id.botonAnadir);
         botonAnadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_ANADIR));
             }
-        });
-
-        logout = v.findViewById(R.id.textoCabecera);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                authViewModel.signOut();
-            }
-        });
+        }); */
 
         authViewModel.getLoggedStatus().observe(getActivity(), new Observer<Boolean>() {
             @Override
@@ -389,5 +426,13 @@ public class FragmentoLista extends Fragment {
             }
 
         }
+
+
+     private void setDataUserOnNavigationDrawer() {
+
+        username = navigationView.findViewById(R.id.nav_user_name);
+        imageProfile = navigationView.findViewById(R.id.profilePicture);
+
+     }
 
 }

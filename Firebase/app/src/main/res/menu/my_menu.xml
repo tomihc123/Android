@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+<item android:title="Home">
+    <menu>
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_mail_outline_24"
+            android:title="Principal forum"/>
+    </menu>
+
+</item>
+
+
+    <item android:title="Profile">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_baseline_person_outline_24"
+                android:title="Settings"/>
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_baseline_cloud_download_24"
+                android:title="Logout"/>
+        </menu>
+
+    </item>
+
+
+</menu>

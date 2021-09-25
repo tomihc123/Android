@@ -6,13 +6,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.room.Model.Novela;
 import com.example.room.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.List;
 
 public class AuthRepository {
 
@@ -30,7 +36,7 @@ public class AuthRepository {
         return usserLoggedMutableLiveData;
     }
 
-    public AuthRepository(Application application) {
+    public AuthRepository(Application applicationn) {
         this.application = application;
         firebaseUserMutableLiveData = new MutableLiveData<>();
         usserLoggedMutableLiveData = new MutableLiveData<>();
@@ -77,6 +83,7 @@ public class AuthRepository {
         });
     }
 
+
     public void login(String email, String pass) {
             auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -97,5 +104,6 @@ public class AuthRepository {
         auth.signOut();
         usserLoggedMutableLiveData.postValue(true);
     }
+
 
 }

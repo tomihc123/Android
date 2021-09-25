@@ -1,14 +1,21 @@
 package com.example.room.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.room.Model.User;
 import com.example.room.R;
 import com.example.room.repository.AuthRepository;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AuthViewModel extends AndroidViewModel {
 
@@ -18,13 +25,11 @@ public class AuthViewModel extends AndroidViewModel {
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
 
 
-    public MutableLiveData<FirebaseUser> getUser() {
-        return user;
-    }
 
     public MutableLiveData<String> getVisualizacion() {
         return visualizacion;
     }
+
 
     public void setVisualizacion(String visualizacion) {
         this.visualizacion.setValue(visualizacion);
@@ -40,7 +45,6 @@ public class AuthViewModel extends AndroidViewModel {
         user = authRepository.getFirebaseUserMutableLiveData();
         loggedStatus = authRepository.getUsserLoggedMutableLiveData();
 
-
     }
 
     public void register(String username, String email, String pass) {
@@ -55,6 +59,5 @@ public class AuthViewModel extends AndroidViewModel {
         authRepository.signOut();
 
     }
-
 
 }
