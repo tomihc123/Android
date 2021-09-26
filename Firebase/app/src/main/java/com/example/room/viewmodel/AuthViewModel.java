@@ -25,6 +25,7 @@ public class AuthViewModel extends AndroidViewModel {
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
 
 
+
     public MutableLiveData<FirebaseUser> getUser() {
         return user;
     }

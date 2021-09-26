@@ -36,10 +36,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.room.Model.Novela;
+import com.example.room.Model.User;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +136,17 @@ public class FragmentoLista extends Fragment {
        username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
        imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
-       authViewModel.
+
+        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    User user = task.getResult().toObject(User.class);
+                    username.setText(user.getUsername());
+                    Glide.with(getActivity()).load(user.getImage()).into(imageProfile);
+                }
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
