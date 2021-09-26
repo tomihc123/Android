@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/nav_background">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilePicture"
@@ -23,6 +24,12 @@
         android:textStyle="bold"
         android:textSize="16dp"
         android:layout_marginLeft="16dp"/>
+
+
+    <View
+        style="@style/line"
+        android:layout_below="@+id/nav_user_name"
+        android:layout_width="match_parent"/>
 
 
 </RelativeLayout>

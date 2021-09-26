@@ -128,7 +128,10 @@ public class FragmentoLista extends Fragment {
         drawerLayout = v.findViewById(R.id.drawer_layout);
         navigationView = v.findViewById(R.id.navigation_view);
 
-       // setDataUserOnNavigationDrawer();
+       username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
+       imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
+
+       authViewModel.
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -427,12 +430,5 @@ public class FragmentoLista extends Fragment {
 
         }
 
-
-     private void setDataUserOnNavigationDrawer() {
-
-        username = navigationView.findViewById(R.id.nav_user_name);
-        imageProfile = navigationView.findViewById(R.id.profilePicture);
-
-     }
 
 }
