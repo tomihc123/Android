@@ -164,7 +164,7 @@ public class FragmentoLista extends Fragment {
                         Toast.makeText(getContext(), "Home is clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_settings:
-                        Toast.makeText(getContext(), "Settings is clicked", Toast.LENGTH_SHORT).show();
+                        novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_SETTINGS));
                         break;
                     case R.id.nav_logout:
                         authViewModel.signOut();

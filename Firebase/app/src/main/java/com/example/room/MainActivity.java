@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentTutorial fragmentTutorial = new FragmentTutorial();
         final LoginFragment loginFragment = new LoginFragment();
         final RegisterFragment registerFragment = new RegisterFragment();
-
+        final FragmentProfileSettings fragmentProfileSettings = new FragmentProfileSettings();
 
         //Guardamos una clave valor para ver si ya se vio el tutorial de inicio
         SharedPreferences.Editor  editor = sharedPreferences.edit();
@@ -114,8 +114,10 @@ public class MainActivity extends AppCompatActivity {
                     if (s.equals(getResources().getString(R.string.VISUALIZACION_LISTA))) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
                     } else if (s.equals(getResources().getString(R.string.VISUALIZACION_ANADIR))) {
-                    } else  {
+                    } else  if(s.equals(getResources().getString(R.string.VISUALIZACION_EDITAR))) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoDetalle).addToBackStack(null).commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentProfileSettings).addToBackStack(null).commit();
                     }
                 } else {
                     if(s.equals(getResources().getString(R.string.VISUALIZACION_ANADIR))) {
