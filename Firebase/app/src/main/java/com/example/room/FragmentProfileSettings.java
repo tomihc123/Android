@@ -63,7 +63,6 @@ public class FragmentProfileSettings extends Fragment {
     private Uri imageUri;
     private FirebaseStorage storage;
 
-
     String DISPLAY_NAME = null;
     String PROFILE_IMAGE_URL = null;
     int TAKE_IMAGE_CODE = 10001;
@@ -133,7 +132,7 @@ public class FragmentProfileSettings extends Fragment {
                 if(task.isSuccessful()) {
                     User user = task.getResult().toObject(User.class);
                     username.setText(user.getUsername());
-                    Glide.with(getActivity()).load(user.getImage()).into(imageProfile);
+                    GlideApp.with(getActivity()).load(storage.getReference().child("images/"+user.getImage())).into(imageProfile);
                     Date date = new Date(Long.parseLong(user.getJoinDate()));
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     joindate.setText(simpleDateFormat.format(date));
@@ -171,6 +170,7 @@ public class FragmentProfileSettings extends Fragment {
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.setTitle("Uploading Image...");
         pd.show();
+        
 
         final String randomKey = java.util.UUID.randomUUID().toString();
 
@@ -181,7 +181,7 @@ public class FragmentProfileSettings extends Fragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
                 Map<String, Object> map = new HashMap<>();
-                map.put("image", taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+                map.put("image", randomKey);
                 FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update(map);
                 Toast.makeText(getContext(), "Image Upload", Toast.LENGTH_SHORT).show();
             }

@@ -45,6 +45,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +144,7 @@ public class FragmentoLista extends Fragment {
                 if(task.isSuccessful()) {
                     User user = task.getResult().toObject(User.class);
                     username.setText(user.getUsername());
-                    Glide.with(getActivity()).load(user.getImage()).into(imageProfile);
+                    GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).into(imageProfile);
                 }
             }
         });
