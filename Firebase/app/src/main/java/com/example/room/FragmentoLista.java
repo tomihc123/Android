@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.room.Model.Novela;
 import com.example.room.Model.User;
 import com.example.room.viewmodel.AuthViewModel;
@@ -144,7 +145,8 @@ public class FragmentoLista extends Fragment {
                 if(task.isSuccessful()) {
                     User user = task.getResult().toObject(User.class);
                     username.setText(user.getUsername());
-                    GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).into(imageProfile);
+                    GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true).into(imageProfile);
                 }
             }
         });
@@ -380,7 +382,6 @@ public class FragmentoLista extends Fragment {
 
                     if(novela.getNombre().toLowerCase().contains(s.toString().toLowerCase())) {
                         filtro.add(novela);
-                        Toast.makeText(getContext(), ""+novela.getId(), Toast.LENGTH_SHORT).show();
                     }
                     adaptador.setNovelas(filtro);
                 }

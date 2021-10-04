@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.room.Model.User;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
@@ -62,6 +64,9 @@ public class FragmentProfileSettings extends Fragment {
     ProgressBar progressBar;
     private Uri imageUri;
     private FirebaseStorage storage;
+
+    private boolean haveImage;
+    private String url;
 
     String DISPLAY_NAME = null;
     String PROFILE_IMAGE_URL = null;
@@ -132,7 +137,12 @@ public class FragmentProfileSettings extends Fragment {
                 if(task.isSuccessful()) {
                     User user = task.getResult().toObject(User.class);
                     username.setText(user.getUsername());
-                    GlideApp.with(getActivity()).load(storage.getReference().child("images/"+user.getImage())).into(imageProfile);
+                    if(user.getImage() != "") {
+                        GlideApp.with(getActivity()).load(storage.getReference().child("images/" + user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true).into(imageProfile);
+                        haveImage = true;
+                        url = user.getImage();
+                    }
                     Date date = new Date(Long.parseLong(user.getJoinDate()));
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     joindate.setText(simpleDateFormat.format(date));
@@ -170,18 +180,23 @@ public class FragmentProfileSettings extends Fragment {
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.setTitle("Uploading Image...");
         pd.show();
-        
 
-        final String randomKey = java.util.UUID.randomUUID().toString();
+        StorageReference storageReference;
 
-        StorageReference storageReference = storage.getReference().child("images/"+randomKey);
+        if(!haveImage) {
+            final String randomKey = java.util.UUID.randomUUID().toString();
+            storageReference = storage.getReference().child("images/"+randomKey);
+        } else {
+            storageReference = storage.getReference().child("images/"+url);
+
+        }
 
         storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
                 Map<String, Object> map = new HashMap<>();
-                map.put("image", randomKey);
+                map.put("image", taskSnapshot.getMetadata().getName());
                 FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update(map);
                 Toast.makeText(getContext(), "Image Upload", Toast.LENGTH_SHORT).show();
             }

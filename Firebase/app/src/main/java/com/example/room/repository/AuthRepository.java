@@ -60,7 +60,7 @@ public class AuthRepository {
                     user.setUsername(username);
                     user.setEmail(email);
                     user.setJoinDate(auth.getCurrentUser().getMetadata().getCreationTimestamp()+"");
-                    user.setImage("https://firebasestorage.googleapis.com/v0/b/proyecto-v-f094d.appspot.com/o/persona.png?alt=media&token=1966534f-95ff-4c56-8794-46277a1c78a1");
+                    user.setImage("");
 
 
                     FirebaseFirestore.getInstance().collection("Users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
