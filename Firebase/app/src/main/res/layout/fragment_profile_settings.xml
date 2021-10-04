@@ -28,7 +28,6 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/fangyuan"
             android:id="@+id/settingProfilePicture"
             android:padding="3dp"/>
 
