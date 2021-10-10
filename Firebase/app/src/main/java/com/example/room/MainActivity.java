@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentoLista fragmentoLista = new FragmentoLista();
         final FragmentoDetalle fragmentoDetalle = new FragmentoDetalle();
         final FragmentTutorial fragmentTutorial = new FragmentTutorial();
+        final FragmentoAnadir fragmentoAnadir = new FragmentoAnadir();
         final LoginFragment loginFragment = new LoginFragment();
         final RegisterFragment registerFragment = new RegisterFragment();
         final FragmentProfileSettings fragmentProfileSettings = new FragmentProfileSettings();
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     if (s.equals(getResources().getString(R.string.VISUALIZACION_LISTA))) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
                     } else if (s.equals(getResources().getString(R.string.VISUALIZACION_ANADIR))) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).commit();
                     } else  if(s.equals(getResources().getString(R.string.VISUALIZACION_EDITAR))) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoDetalle).addToBackStack(null).commit();
                     } else {

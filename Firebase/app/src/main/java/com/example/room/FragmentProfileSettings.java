@@ -8,18 +8,23 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.L;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.ObjectKey;
@@ -30,6 +35,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -67,6 +74,18 @@ public class FragmentProfileSettings extends Fragment {
 
     private boolean haveImage;
     private String url;
+
+
+    private MaterialToolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+
+
+    private EditText textoFiltro;
+    private TextView usernameNav;
+    private ImageView imageProfileNav;
+
+
 
     String DISPLAY_NAME = null;
     String PROFILE_IMAGE_URL = null;
@@ -127,9 +146,54 @@ public class FragmentProfileSettings extends Fragment {
         joindate = v.findViewById(R.id.joindateprofile);
         editImageProfile = v.findViewById(R.id.editProfilePicture);
 
+        toolbar = v.findViewById(R.id.topbar);
+        drawerLayout = v.findViewById(R.id.drawer_layout);
+        navigationView = v.findViewById(R.id.navigation_view);
+
+        usernameNav = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
+        imageProfileNav = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
+
+
+        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    User user = task.getResult().toObject(User.class);
+                    usernameNav.setText(user.getUsername());
+                    GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true).into(imageProfileNav);
+                }
+            }
+        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        Toast.makeText(getContext(), "Home is clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_settings:
+                        novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_SETTINGS));
+                        break;
+                    case R.id.nav_logout:
+                        authViewModel.signOut();
+                        break;
+                }
+                return true;
+            }
+        });
+
+
         storage = FirebaseStorage.getInstance();
-
-
 
         FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -145,8 +209,8 @@ public class FragmentProfileSettings extends Fragment {
                     }
                     Date date = new Date(Long.parseLong(user.getJoinDate()));
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    joindate.setText(simpleDateFormat.format(date));
-
+                    joindate.setText("Join date: "+simpleDateFormat.format(date));
+                    Toast.makeText(getActivity(), novelaViewModel.getNovelas(user.getIdNovelasSubidas()).getValue().get(0).toString()+"", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -162,6 +226,7 @@ public class FragmentProfileSettings extends Fragment {
 
             }
         });
+
 
         return v;
     }

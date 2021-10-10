@@ -1,8 +1,12 @@
 package com.example.room.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     private String username, email, image, joinDate;
+    private List<String> idNovelasSubidas;
 
 
     public User() {
@@ -45,7 +49,14 @@ public class User {
     public void setJoinDate(String joinDate) {
         this.joinDate = joinDate;
     }
-    
+
+    public List<String> getIdNovelasSubidas() {
+        return idNovelasSubidas;
+    }
+
+    public void setIdNovelasSubidas(List<String> idNovelasSubidas) {
+        this.idNovelasSubidas = idNovelasSubidas;
+    }
 }
 
 

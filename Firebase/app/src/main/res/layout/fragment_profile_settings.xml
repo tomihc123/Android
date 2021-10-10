@@ -1,65 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/drawer_layout"
+tools:context=".FragmentoLista"
+android:background="@color/white">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentProfileSettings">
+    android:layout_height="match_parent">
 
 
 
-    <RelativeLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/cabecera"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/gradient"/>
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:id="@+id/imageCard"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="30dp"
-        app:cardCornerRadius="60dp"
-        app:cardElevation="10dp">
+
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:navigationIcon="@drawable/ic_baseline_dehaze_24">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_search"
+                android:layout_marginEnd="20dp"
+                >
+
+                <EditText
+                    android:id="@+id/buscar"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint=" Buscar"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    />
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toBottomOf="@id/cabecera"
+        android:background="@drawable/gradient">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/settingProfilePicture"
-            android:padding="3dp"/>
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"/>
 
-    </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/usernameProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/settingProfilePicture"
+            app:layout_constraintTop_toTopOf="@id/settingProfilePicture"
+            android:text="Usuario"
+            android:textColor="#fff"
+            android:layout_marginLeft="20dp"
+            android:textSize="22dp"/>
+        <TextView
+            android:id="@+id/joindateprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/usernameProfile"
+            android:text="Join date:"
+            app:layout_constraintStart_toStartOf="@id/usernameProfile">
 
-    <TextView
-        android:id="@+id/usernameProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/imageCard"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="100dp"
-        android:text="Usuario"
-        android:textColor="#fff"
-        android:layout_marginLeft="20dp"
-        android:textSize="22dp"/>
-    <TextView
-        android:id="@+id/joindateprofile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/usernameProfile"
-        android:text="Join date: bLa"
-        app:layout_constraintStart_toStartOf="@id/usernameProfile">
+        </TextView>
 
-    </TextView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editProfilePicture"
+            app:layout_constraintStart_toEndOf="@id/settingProfilePicture"
+            app:layout_constraintBottom_toBottomOf="@id/settingProfilePicture"
+            android:src="@drawable/ic_baseline_edit_24"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editProfilePicture"
-        app:layout_constraintBottom_toBottomOf="@id/imageCard"
-        app:layout_constraintEnd_toEndOf="@id/imageCard"
-        android:src="@drawable/ic_baseline_edit_24"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<com.google.android.material.navigation.NavigationView
+    android:id="@+id/navigation_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    app:headerLayout="@layout/nav_header"
+    app:menu="@menu/my_menu"/>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

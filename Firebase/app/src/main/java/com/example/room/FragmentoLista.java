@@ -389,13 +389,13 @@ public class FragmentoLista extends Fragment {
         });
 
 
-      /*  botonAnadir = v.findViewById(R.id.botonAnadir);
+        botonAnadir = v.findViewById(R.id.botonAnadir);
         botonAnadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_ANADIR));
             }
-        }); */
+        });
 
         authViewModel.getLoggedStatus().observe(getActivity(), new Observer<Boolean>() {
             @Override

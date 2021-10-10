@@ -75,6 +75,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cabecera"/>
 
+        <Button
+            android:id="@+id/botonAnadir"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/background_buttom"
+            android:text="+"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
