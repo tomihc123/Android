@@ -69,6 +69,7 @@ android:background="@color/white">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:id="@+id/datosUsuarioSetting"
         app:layout_constraintTop_toBottomOf="@id/cabecera"
         android:background="@drawable/gradient">
 
@@ -110,6 +111,16 @@ android:background="@color/white">
             android:src="@drawable/ic_baseline_edit_24"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listaNovelasUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/datosUsuarioSetting"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

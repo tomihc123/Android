@@ -2,7 +2,9 @@ package com.example.room;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -13,7 +15,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.room.Model.User;
+import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -27,6 +35,7 @@ public class FragmentoAnadir extends Fragment {
 
     //ViewModel
     private NovelaViewModel novelaViewModel;
+    private AuthViewModel authViewModel;
 
     //Widgets para editar
     private EditText nuevoNombre, nuevaDescripcion, autor, nuevoEnlace;
@@ -69,6 +78,7 @@ public class FragmentoAnadir extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         novelaViewModel = new ViewModelProvider(getActivity()).get(NovelaViewModel.class);
+        authViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -100,7 +110,26 @@ public class FragmentoAnadir extends Fragment {
                     novela.put("enlaceDescarga", nuevoEnlace.getText().toString());
 
                     novelaViewModel.anadirNovela(novela);
+
+                    novelaViewModel.getIdNovelaSubida().observe(getActivity(), new Observer<String>() {
+                        @Override
+                        public void onChanged(String s) {
+                            FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()) {
+                                        User user = task.getResult().toObject(User.class);
+                                        user.getIdNovelasSubidas().add(s);
+                                        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update("idNovelasSubidas", user.getIdNovelasSubidas());
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_LISTA));
+
                 } else {
                     LinearLayout linearContenedorEdits = view.findViewById(R.id.linearLayout);
 

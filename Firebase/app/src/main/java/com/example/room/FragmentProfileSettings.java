@@ -1,6 +1,8 @@
 package com.example.room;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,15 +13,22 @@ import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +37,7 @@ import com.airbnb.lottie.L;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.ObjectKey;
+import com.example.room.Model.Novela;
 import com.example.room.Model.User;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
@@ -47,8 +57,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -68,6 +80,10 @@ public class FragmentProfileSettings extends Fragment {
     private TextView username, joindate;
     private ImageView imageProfile, editImageProfile;
 
+
+    private RecyclerView recyclerView;
+    private ListAdapterSettings listAdapter;
+
     ProgressBar progressBar;
     private Uri imageUri;
     private FirebaseStorage storage;
@@ -76,6 +92,7 @@ public class FragmentProfileSettings extends Fragment {
     private String url;
 
 
+    ArrayList<Novela> novelas = new ArrayList<Novela>();
     private MaterialToolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -125,8 +142,8 @@ public class FragmentProfileSettings extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        novelaViewModel = new ViewModelProvider(getActivity()).get(NovelaViewModel.class);
         authViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
+        novelaViewModel = new ViewModelProvider(getActivity()).get(NovelaViewModel.class);
 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -150,6 +167,8 @@ public class FragmentProfileSettings extends Fragment {
         drawerLayout = v.findViewById(R.id.drawer_layout);
         navigationView = v.findViewById(R.id.navigation_view);
 
+        recyclerView = v.findViewById(R.id.listaNovelasUsuario);
+
         usernameNav = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
         imageProfileNav = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
@@ -166,6 +185,155 @@ public class FragmentProfileSettings extends Fragment {
             }
         });
 
+
+
+        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                     User user = task.getResult().toObject(User.class);
+                     novelaViewModel.getNovelasUsuarios(user.getIdNovelasSubidas());
+                }
+            }
+        });
+
+
+            listAdapter = new ListAdapterSettings(new ListAdapterSettings.OnItemClickListener() {
+            @Override
+            public void onItemClick(Novela novela, int id) {
+                if(id == R.id.leerMas) {
+                    novelaViewModel.setNovelaEditar(novela);
+                    novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_EDITAR));
+                }
+               //Si se ha pulsado para editar creamos un alert dialog
+                if(id == R.id.editar) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    //Lo inflamer con nuestro layout
+                    View view = getLayoutInflater().inflate(R.layout.edit_dialog, null);
+                    //Encontramos los campos por id
+                    final EditText nombreNovelaEditar = view.findViewById(R.id.nombreNovelaEditar);
+                    final EditText descripcionNovelaEditar = view.findViewById(R.id.descripcionNovelaEditar);
+                    final EditText autorNovelaEditar = view.findViewById(R.id.autorNovelaEditar);
+                    final Button confirmarEditar = view.findViewById(R.id.botonEditarConfirmar);
+                    final Button cancelarEditar = view.findViewById(R.id.botonEditarCancelar);
+
+                    //Ponemos por defecto los datos de la novela que se quiere editar
+                    nombreNovelaEditar.setText(novela.getNombre());
+                    descripcionNovelaEditar.setText(novela.getDescripcion());
+                    autorNovelaEditar.setText(novela.getAutor());
+
+                    builder.setView(view);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+
+                    confirmarEditar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!nombreNovelaEditar.getText().toString().isEmpty() && !descripcionNovelaEditar.getText().toString().isEmpty() && !autorNovelaEditar.getText().toString().isEmpty()) {
+                                novela.setNombre(nombreNovelaEditar.getText().toString());
+                                novela.setDescripcion(descripcionNovelaEditar.getText().toString());
+                                novela.setAutor(autorNovelaEditar.getText().toString());
+                                //Actualizamos la novela con los datos nuevo, (la id de la novela sigue siendo la misma)
+                                novelaViewModel.actualizarNovela(novela);
+                                dialog.dismiss();
+
+                            } else {
+
+                                    LinearLayout linearContenedorEditar = view.findViewById(R.id.linearLayoutEditar);
+
+                                    for(int i = 0; i < linearContenedorEditar.getChildCount() - 1; i++) {
+
+                                        if(((android.widget.EditText)linearContenedorEditar.getChildAt(i)).getText().toString().isEmpty()) {
+                                            ((EditText)linearContenedorEditar.getChildAt(i)).setError("No puede estar vacio");
+                                        }
+
+                                    }
+                                }
+
+                            }
+                        });
+
+
+                    cancelarEditar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                }
+            }
+        }, getActivity());
+
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(listAdapter);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        novelaViewModel.getNovelasUsuarios().observe(getActivity(), new Observer<List<Novela>>() {
+            @Override
+            public void onChanged(List<Novela> novelas) {
+                listAdapter.setNovelas(novelas);
+                listAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        //El item touch helper sirve para gestionar los view holder se un recycler viw, este se lo indicamos nosotros cual es en el attatch to recycler view
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                //Si se arrasta hacia izquiera o derecha se muestra un dialod de si se quiere eliminar la novela
+                AlertDialog dialogo = new AlertDialog
+                        .Builder(getActivity())
+                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Obtenemos la novela en la posicion de ese view holder
+                                String idNovelaEliminada = listAdapter.getItemAtPosition(viewHolder.getAdapterPosition()).getId();
+                                novelaViewModel.eliminarNovela(listAdapter.getItemAtPosition(viewHolder.getAdapterPosition()));
+                                FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if(task.isSuccessful()) {
+                                            User user = task.getResult().toObject(User.class);
+                                            user.getIdNovelasSubidas().remove(idNovelaEliminada);
+                                            FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update("idNovelasSubidas", user.getIdNovelasSubidas());
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            //Si se cancela que se sigua mostrando todas las novelas
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                listAdapter.setNovelas(novelaViewModel.getNovelasUsuarios().getValue());
+                            }
+                        })
+                        .setTitle("Confirmar")
+                        .setMessage("¿Deseas eliminar la novela "+listAdapter.getItemAtPosition(viewHolder.getAdapterPosition()).getNombre()+" ?") // El mensaje
+                        .create();
+
+                dialogo.show();
+                //Si se ha salido fuera del dialog sin pulsar cancelar, tambien debemos mostrar las novelas como estaban
+                listAdapter.setNovelas(novelaViewModel.getNovelasUsuarios().getValue());
+
+            }
+        }).attachToRecyclerView(recyclerView);
+
+
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +347,7 @@ public class FragmentProfileSettings extends Fragment {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 switch (item.getItemId()) {
                     case R.id.nav_home:
-                        Toast.makeText(getContext(), "Home is clicked", Toast.LENGTH_SHORT).show();
+                        novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_HOME));
                         break;
                     case R.id.nav_settings:
                         novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_SETTINGS));
@@ -210,7 +378,6 @@ public class FragmentProfileSettings extends Fragment {
                     Date date = new Date(Long.parseLong(user.getJoinDate()));
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     joindate.setText("Join date: "+simpleDateFormat.format(date));
-                    Toast.makeText(getActivity(), novelaViewModel.getNovelas(user.getIdNovelasSubidas()).getValue().get(0).toString()+"", Toast.LENGTH_SHORT).show();
                 }
             }
         });

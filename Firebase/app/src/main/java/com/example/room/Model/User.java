@@ -6,7 +6,7 @@ import java.util.List;
 public class User {
 
     private String username, email, image, joinDate;
-    private List<String> idNovelasSubidas;
+    private ArrayList<String> idNovelasSubidas;
 
 
     public User() {
@@ -50,11 +50,11 @@ public class User {
         this.joinDate = joinDate;
     }
 
-    public List<String> getIdNovelasSubidas() {
+    public ArrayList<String> getIdNovelasSubidas() {
         return idNovelasSubidas;
     }
 
-    public void setIdNovelasSubidas(List<String> idNovelasSubidas) {
+    public void setIdNovelasSubidas(ArrayList<String> idNovelasSubidas) {
         this.idNovelasSubidas = idNovelasSubidas;
     }
 }

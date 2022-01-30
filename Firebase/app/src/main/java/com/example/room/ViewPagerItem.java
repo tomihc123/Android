@@ -35,4 +35,5 @@ public class ViewPagerItem {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
 }

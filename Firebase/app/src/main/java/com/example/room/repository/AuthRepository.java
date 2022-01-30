@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 public class AuthRepository {
@@ -100,6 +101,8 @@ public class AuthRepository {
                 }
             });
     }
+
+
 
     public void signOut() {
         auth.signOut();

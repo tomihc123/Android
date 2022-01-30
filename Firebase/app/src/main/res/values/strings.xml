@@ -10,6 +10,7 @@
     <string name="VISUALIZACION.IRALLOGIN">IRALLOGIN</string>
     <string name="VISUALIZACION.IRAREGISTER">IRAREGISTER</string>
     <string name="VISUALIZACION.SETTINGS">SETTINGS</string>
+    <string name="VISUALIZACION.HOME">HOME</string>
 
 
     <string name="rellearNombre">Porfavor ingrese el nombre</string>

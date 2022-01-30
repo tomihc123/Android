@@ -118,8 +118,11 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).commit();
                     } else  if(s.equals(getResources().getString(R.string.VISUALIZACION_EDITAR))) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoDetalle).addToBackStack(null).commit();
-                    } else {
+                    } else if(s.equals(getResources().getString(R.string.VISUALIZACION_SETTINGS))){
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentProfileSettings).addToBackStack(null).commit();
+                    } else  if(s.equals(getResources().getString(R.string.VISUALIZACION_HOME))) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
+
                     }
                 } else {
                     if(s.equals(getResources().getString(R.string.VISUALIZACION_ANADIR))) {

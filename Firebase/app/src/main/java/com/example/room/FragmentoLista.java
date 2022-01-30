@@ -186,66 +186,7 @@ public class FragmentoLista extends Fragment {
                     novelaViewModel.setNovelaEditar(novela);
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_EDITAR));
                 }
-           /*     //Si se ha pulsado para editar creamos un alert dialog
-                if(id == R.id.editar) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    //Lo inflamer con nuestro layout
-                    View view = getLayoutInflater().inflate(R.layout.edit_dialog, null);
-                    //Encontramos los campos por id
-                    final EditText nombreNovelaEditar = view.findViewById(R.id.nombreNovelaEditar);
-                    final EditText descripcionNovelaEditar = view.findViewById(R.id.descripcionNovelaEditar);
-                    final EditText autorNovelaEditar = view.findViewById(R.id.autorNovelaEditar);
-                    final Button confirmarEditar = view.findViewById(R.id.botonEditarConfirmar);
-                    final Button cancelarEditar = view.findViewById(R.id.botonEditarCancelar);
 
-                    //Ponemos por defecto los datos de la novela que se quiere editar
-                    nombreNovelaEditar.setText(novela.getNovela().getNombre());
-                    descripcionNovelaEditar.setText(novela.getNovela().getDescripcion());
-                    autorNovelaEditar.setText(novela.getNovela().getAutor());
-
-                    builder.setView(view);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-
-
-                    confirmarEditar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (!nombreNovelaEditar.getText().toString().isEmpty() && !descripcionNovelaEditar.getText().toString().isEmpty() && !autorNovelaEditar.getText().toString().isEmpty()) {
-                                novela.getNovela().setNombre(nombreNovelaEditar.getText().toString());
-                                novela.getNovela().setDescripcion(descripcionNovelaEditar.getText().toString());
-                                novela.getNovela().setAutor(autorNovelaEditar.getText().toString());
-                                //Actualizamos la novela con los datos nuevo, (la id de la novela sigue siendo la misma)
-                                novelaViewModel.actualizar(novela.getNovela());
-                                dialog.dismiss();
-
-                            } else {
-
-                                    LinearLayout linearContenedorEditar = view.findViewById(R.id.linearLayoutEditar);
-
-                                    for(int i = 0; i < linearContenedorEditar.getChildCount() - 1; i++) {
-
-                                        if(((android.widget.EditText)linearContenedorEditar.getChildAt(i)).getText().toString().isEmpty()) {
-                                            ((EditText)linearContenedorEditar.getChildAt(i)).setError("No puede estar vacio");
-                                        }
-
-                                    }
-                                }
-
-                            }
-                        });
-
-
-                    cancelarEditar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                } */
-
-                //Si se quiere descargar la novela
                 if(id == R.id.download) {
 
                     BiometricManager biometricManager = BiometricManager.from(getActivity());
@@ -309,10 +250,14 @@ public class FragmentoLista extends Fragment {
             }
         }, getActivity());
 
+
+
         recyclerView = v.findViewById(R.id.lista);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adaptador);
+
+
 
 
         //Observamos los datos de la base de datos, en cuanto cambie se actualiza la lista
@@ -323,43 +268,6 @@ public class FragmentoLista extends Fragment {
                 adaptador.notifyDataSetChanged();
             }
         });
-
-   /*     //El item touch helper sirve para gestionar los view holder se un recycler viw, este se lo indicamos nosotros cual es en el attatch to recycler view
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                //Si se arrasta hacia izquiera o derecha se muestra un dialod de si se quiere eliminar la novela
-                AlertDialog dialogo = new AlertDialog
-                        .Builder(getActivity())
-                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //Obtenemos la novela en la posicion de ese view holder
-                                novelaViewModel.eliminar(adaptador.getItemAtPosition(viewHolder.getAdapterPosition()));
-                            }
-                        })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            //Si se cancela que se sigua mostrando todas las novelas
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                adaptador.setNovelas(novelaViewModel.obtenerNovelas().getValue());
-                            }
-                        })
-                        .setTitle("Confirmar")
-                        .setMessage("¿Deseas eliminar la novela "+adaptador.getItemAtPosition(viewHolder.getAdapterPosition()).getNombre()+" ?") // El mensaje
-                        .create();
-
-                dialogo.show();
-                //Si se ha salido fuera del dialog sin pulsar cancelar, tambien debemos mostrar las novelas como estaban
-                adaptador.setNovelas(novelaViewModel.obtenerNovelas().getValue());
-
-            }
-        }).attachToRecyclerView(recyclerView); */
 
 
         textoFiltro = v.findViewById(R.id.buscar);
