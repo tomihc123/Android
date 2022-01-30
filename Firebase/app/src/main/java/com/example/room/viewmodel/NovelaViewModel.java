@@ -18,7 +18,12 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
     private NovelaFireRepository novelaRepository;
     private MutableLiveData<List<Novela>> novelas = new MutableLiveData<>();
     private MutableLiveData<List<Novela>> novelasUsuarios = new MutableLiveData<>();
+
+
     private MutableLiveData<String> idNovelaSubida = new MutableLiveData<>();
+
+
+
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
     private Novela novelaEditar;;
 
@@ -78,16 +83,14 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
         this.novelaEditar = novelaEditar;
     }
 
+
+
+
     public MutableLiveData<String> getVisualizacion() {
         return visualizacion;
     }
 
     public void setVisualizacion(String visualizacion) { this.visualizacion.setValue(visualizacion); }
-
-
-
-
-
 
     @Override
     public void onError(Exception e) {
