@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class AuthRepository {
 
     }
 
-    public void register(String username,   String email, String pass) {
+    public void register(String username, String email, String pass) {
         auth.createUserWithEmailAndPassword(email , pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -61,7 +62,8 @@ public class AuthRepository {
                     user.setUsername(username);
                     user.setEmail(email);
                     user.setJoinDate(auth.getCurrentUser().getMetadata().getCreationTimestamp()+"");
-                    user.setImage("");
+                    user.setImage("yinyang.png");
+                    user.setIdNovelasSubidas(new ArrayList<String>());
 
 
                     FirebaseFirestore.getInstance().collection("Users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {

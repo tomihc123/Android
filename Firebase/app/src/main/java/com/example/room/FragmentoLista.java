@@ -145,8 +145,9 @@ public class FragmentoLista extends Fragment {
                 if(task.isSuccessful()) {
                     User user = task.getResult().toObject(User.class);
                     username.setText(user.getUsername());
-                    GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true).into(imageProfile);
+                        GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true).into(imageProfile);
+
                 }
             }
         });
@@ -164,7 +165,6 @@ public class FragmentoLista extends Fragment {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 switch (item.getItemId()) {
                     case R.id.nav_home:
-                        Toast.makeText(getContext(), "Home is clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_settings:
                         novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_SETTINGS));
@@ -255,6 +255,9 @@ public class FragmentoLista extends Fragment {
         recyclerView = v.findViewById(R.id.lista);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
+
+        novelaViewModel.getNovelas();
+
         recyclerView.setAdapter(adaptador);
 
 
@@ -286,12 +289,14 @@ public class FragmentoLista extends Fragment {
             public void afterTextChanged(Editable s) {
                 //Creamos un arraylist aux para el filtro, meteremos las novelas con el nombre que coincidan con lo que ponemos en text que se le pasa por parametro
                 ArrayList<Novela> filtro = new ArrayList<>();
-                for(Novela novela: novelaViewModel.getNovelas().getValue()) {
+                if(novelaViewModel.getNovelas().getValue() != null) {
+                    for (Novela novela : novelaViewModel.getNovelas().getValue()) {
 
-                    if(novela.getNombre().toLowerCase().contains(s.toString().toLowerCase())) {
-                        filtro.add(novela);
+                        if (novela.getNombre().toLowerCase().contains(s.toString().toLowerCase())) {
+                            filtro.add(novela);
+                        }
+                        adaptador.setNovelas(filtro);
                     }
-                    adaptador.setNovelas(filtro);
                 }
             }
         });

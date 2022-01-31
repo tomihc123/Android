@@ -301,6 +301,7 @@ public class FragmentProfileSettings extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 //Obtenemos la novela en la posicion de ese view holder
                                 String idNovelaEliminada = listAdapter.getItemAtPosition(viewHolder.getAdapterPosition()).getId();
+                                String idImagen = listAdapter.getItemAtPosition(viewHolder.getAdapterPosition()).getImagen();
                                 novelaViewModel.eliminarNovela(listAdapter.getItemAtPosition(viewHolder.getAdapterPosition()));
                                 FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
@@ -309,6 +310,7 @@ public class FragmentProfileSettings extends Fragment {
                                             User user = task.getResult().toObject(User.class);
                                             user.getIdNovelasSubidas().remove(idNovelaEliminada);
                                             FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update("idNovelasSubidas", user.getIdNovelasSubidas());
+                                            eliminarImagen(idImagen);
                                         }
                                     }
                                 });
@@ -369,12 +371,13 @@ public class FragmentProfileSettings extends Fragment {
                 if(task.isSuccessful()) {
                     User user = task.getResult().toObject(User.class);
                     username.setText(user.getUsername());
-                    if(user.getImage() != "") {
+
                         GlideApp.with(getActivity()).load(storage.getReference().child("images/" + user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true).into(imageProfile);
-                        haveImage = true;
                         url = user.getImage();
-                    }
+
+                        haveImage = !user.getImage().equals("yinyang.png");
+
                     Date date = new Date(Long.parseLong(user.getJoinDate()));
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     joindate.setText("Join date: "+simpleDateFormat.format(date));
@@ -408,6 +411,35 @@ public class FragmentProfileSettings extends Fragment {
     }
 }
 
+
+    private void eliminarImagen(String id) {
+
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setTitle("Eliminando  Novela...");
+        pd.show();
+
+        StorageReference storageReference;
+
+        String[] aux = id.split("https://firebasestorage.googleapis.com/v0/b/proyecto-v-f094d.appspot.com/o/");
+        //8a3059fb-64e6-4300-adcf-3f49276fea6d?alt=media&token=7a55761e-0027-4d4f-b754-2f7c721ac729")
+        String auxiliar[] = aux[1].split("\\?alt=media&token=");
+
+        storageReference = storage.getReference().child(auxiliar[0]);
+
+        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                pd.dismiss();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Cannot delete image", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
     private void uploadImage() {
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.setTitle("Uploading Image...");
@@ -418,9 +450,9 @@ public class FragmentProfileSettings extends Fragment {
         if(!haveImage) {
             final String randomKey = java.util.UUID.randomUUID().toString();
             storageReference = storage.getReference().child("images/"+randomKey);
+            haveImage = true;
         } else {
             storageReference = storage.getReference().child("images/"+url);
-
         }
 
         storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

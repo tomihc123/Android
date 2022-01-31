@@ -41,18 +41,26 @@ public class NovelaFireRepository {
 
     public void getNovelas() {
 
-        novelaRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                novelas.clear();
+        if(novelaRef != null) {
 
-                for(QueryDocumentSnapshot document: queryDocumentSnapshots) {
-                    Novela novela = document.toObject(Novela.class);
-                    novelas.add(novela);
-                    onFirestoreTaskComplete.novelaData(novelas);
+            novelaRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    novelas.clear();
+
+                    if (queryDocumentSnapshots != null) {
+
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Novela novela = document.toObject(Novela.class);
+                            novelas.add(novela);
+                            onFirestoreTaskComplete.novelaData(novelas);
+                        }
+                    }
+
                 }
-            }
-        });
+            });
+
+        }
 
     }
 
@@ -61,18 +69,28 @@ public class NovelaFireRepository {
 
        public void getNovelas(List<String> idNovelas) {
 
-        novelaRef.whereIn(FieldPath.documentId(), idNovelas).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                novelasUsuario.clear();
+        if(!idNovelas.isEmpty()) {
 
-                for(QueryDocumentSnapshot document: queryDocumentSnapshots) {
-                    Novela novela = document.toObject(Novela.class);
-                    novelasUsuario.add(novela);
-                    onFirestoreTaskComplete.novelaDataUser(novelasUsuario);
+            novelaRef.whereIn(FieldPath.documentId(), idNovelas).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    novelasUsuario.clear();
+
+                    if (queryDocumentSnapshots != null) {
+
+                        if(!queryDocumentSnapshots.isEmpty()) {
+
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                Novela novela = document.toObject(Novela.class);
+                                novelasUsuario.add(novela);
+                                onFirestoreTaskComplete.novelaDataUser(novelasUsuario);
+                            }
+                        }
+                    }
                 }
-            }
-        });
+            });
+
+        }
 
     }
 

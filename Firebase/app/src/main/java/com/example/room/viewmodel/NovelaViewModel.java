@@ -30,7 +30,6 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
     public NovelaViewModel(Application application) {
         super(application);
         novelaRepository = new NovelaFireRepository(this);
-        novelaRepository.getNovelas();
     }
 
 
@@ -40,6 +39,7 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
     }
 
     public MutableLiveData<List<Novela>> getNovelas() {
+        novelaRepository.getNovelas();
          return novelas;
     }
 
@@ -82,8 +82,6 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
     public void setNovelaEditar(Novela novelaEditar) {
         this.novelaEditar = novelaEditar;
     }
-
-
 
 
     public MutableLiveData<String> getVisualizacion() {
