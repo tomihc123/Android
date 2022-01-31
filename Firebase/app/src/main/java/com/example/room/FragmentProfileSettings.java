@@ -78,7 +78,7 @@ public class FragmentProfileSettings extends Fragment {
     private AuthViewModel authViewModel;
 
     private TextView username, joindate;
-    private ImageView imageProfile, editImageProfile;
+    private ImageView imageProfile, editImageProfile, editUsername;
 
 
     private RecyclerView recyclerView;
@@ -91,8 +91,6 @@ public class FragmentProfileSettings extends Fragment {
     private boolean haveImage;
     private String url;
 
-
-    ArrayList<Novela> novelas = new ArrayList<Novela>();
     private MaterialToolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -166,6 +164,8 @@ public class FragmentProfileSettings extends Fragment {
         toolbar = v.findViewById(R.id.topbar);
         drawerLayout = v.findViewById(R.id.drawer_layout);
         navigationView = v.findViewById(R.id.navigation_view);
+
+        editUsername = v.findViewById(R.id.editUsername);
 
         recyclerView = v.findViewById(R.id.listaNovelasUsuario);
 
@@ -386,6 +386,67 @@ public class FragmentProfileSettings extends Fragment {
         });
 
 
+        editUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                //Lo inflamer con nuestro layout
+                View view = getLayoutInflater().inflate(R.layout.edit_dialog_username, null);
+                //Encontramos los campos por id
+                final EditText nombreUsuarioEditar = view.findViewById(R.id.nuevNombreUsuario);
+                nombreUsuarioEditar.setText(username.getText().toString());
+                final Button confirmarEditar = view.findViewById(R.id.botonEditarConfirmar);
+                final Button cancelarEditar = view.findViewById(R.id.botonEditarCancelar);
+
+                builder.setView(view);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
+                confirmarEditar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!nombreUsuarioEditar.getText().toString().isEmpty() && nombreUsuarioEditar.getText().toString().length() <= 18) {
+
+                            FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update("username", nombreUsuarioEditar.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    username.setText(nombreUsuarioEditar.getText().toString());
+                                    usernameNav.setText(nombreUsuarioEditar.getText().toString());
+                                    dialog.dismiss();
+                                }
+                            });
+
+                        } else {
+
+                            LinearLayout linearContenedorEditar = view.findViewById(R.id.linearLayoutEditar);
+
+                            for(int i = 0; i < linearContenedorEditar.getChildCount() - 1; i++) {
+
+                                if(((android.widget.EditText)linearContenedorEditar.getChildAt(i)).getText().toString().isEmpty()) {
+                                    ((EditText)linearContenedorEditar.getChildAt(i)).setError("No puede estar vacio");
+                                } else {
+                                    ((EditText)linearContenedorEditar.getChildAt(i)).setError("El nombre es muy largo");
+                                }
+
+                            }
+                        }
+
+                    }
+                });
+
+
+                cancelarEditar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+            }
+        });
+
         editImageProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -450,6 +511,7 @@ public class FragmentProfileSettings extends Fragment {
         if(!haveImage) {
             final String randomKey = java.util.UUID.randomUUID().toString();
             storageReference = storage.getReference().child("images/"+randomKey);
+            url = randomKey;
             haveImage = true;
         } else {
             storageReference = storage.getReference().child("images/"+url);

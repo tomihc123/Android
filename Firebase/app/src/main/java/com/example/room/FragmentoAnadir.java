@@ -204,6 +204,7 @@ public class FragmentoAnadir extends Fragment {
                             novela.put("autor", autor.getText().toString());
                             novela.put("enlaceDescarga", nuevoEnlace.getText().toString());
                             novela.put("imagen", uri.toString());
+                            //novela.put("likes", 0+"");
 
                             novelaViewModel.anadirNovela(novela);
 
