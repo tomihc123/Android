@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         //ViewModel
         novelaViewModel = new ViewModelProvider(this).get(NovelaViewModel.class);
-
         //ViewModelUsers
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 

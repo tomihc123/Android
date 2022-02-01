@@ -30,18 +30,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/nombre"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:id="@+id/nombre" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-           <TextView
-               android:id="@+id/autor"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:fontFamily="sans-serif-light"
-               android:layout_marginBottom="8dp"
-               android:textColor="@android:color/background_dark"/>
 
             <TextView
                 android:id="@+id/descripcion"
@@ -49,6 +42,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:textColor="@android:color/background_dark" />
+
+
+            <TextView
+                android:id="@+id/autor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/background_dark"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"

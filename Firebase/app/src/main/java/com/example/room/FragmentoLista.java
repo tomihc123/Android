@@ -44,6 +44,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -78,6 +79,8 @@ public class FragmentoLista extends Fragment {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+
+    private User userData;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -139,18 +142,15 @@ public class FragmentoLista extends Fragment {
        imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
 
-        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    User user = task.getResult().toObject(User.class);
-                    username.setText(user.getUsername());
-                        GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true).into(imageProfile);
-
-                }
+            public void onChanged(User user) {
+                userData = user;
+                username.setText(userData.getUsername());
+                GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+userData.getImage())).into(imageProfile);
             }
         });
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +185,12 @@ public class FragmentoLista extends Fragment {
                 if(id == R.id.leerMas) {
                     novelaViewModel.setNovelaEditar(novela);
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_EDITAR));
+                }
+
+                if(id == R.id.likes) {
+
+                    Toast.makeText(getActivity(), "im increasing", Toast.LENGTH_SHORT).show();
+
                 }
 
                 if(id == R.id.download) {
@@ -256,10 +262,9 @@ public class FragmentoLista extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        novelaViewModel.getNovelas();
+       //novelaViewModel.getNovelas();
 
         recyclerView.setAdapter(adaptador);
-
 
 
 
@@ -267,8 +272,10 @@ public class FragmentoLista extends Fragment {
         novelaViewModel.getNovelas().observe(getActivity(), new Observer<List<Novela>>() {
             @Override
             public void onChanged(List<Novela> novelas) {
-                adaptador.setNovelas(novelas);
-                adaptador.notifyDataSetChanged();
+                if(textoFiltro.getText().toString().isEmpty()) {
+                    adaptador.setNovelas(novelas);
+                    adaptador.notifyDataSetChanged();
+                }
             }
         });
 

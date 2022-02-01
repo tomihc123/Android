@@ -59,7 +59,7 @@ public class FragmentoAnadir extends Fragment {
     private Uri imageUri;
 
 
-    HashMap<String, String> novela = new HashMap<>();
+    HashMap<String, Object> novela = new HashMap<>();
 
 
     private FirebaseStorage storage;
@@ -204,7 +204,8 @@ public class FragmentoAnadir extends Fragment {
                             novela.put("autor", autor.getText().toString());
                             novela.put("enlaceDescarga", nuevoEnlace.getText().toString());
                             novela.put("imagen", uri.toString());
-                            //novela.put("likes", 0+"");
+                            novela.put("publicador", authViewModel.getUser().getValue().getUid());
+                            novela.put("likes", 0);
 
                             novelaViewModel.anadirNovela(novela);
 

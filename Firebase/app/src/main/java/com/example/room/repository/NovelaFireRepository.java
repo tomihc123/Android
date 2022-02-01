@@ -20,6 +20,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,11 +41,11 @@ public class NovelaFireRepository {
     }
 
 
-    public void getNovelas() {
+  /*  public void getNovelas() {
 
         if(novelaRef != null) {
 
-            novelaRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            novelaRef.orderBy("likes", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                     novelas.clear();
@@ -62,9 +64,26 @@ public class NovelaFireRepository {
 
         }
 
+    } */
+
+    public void getNovelas() {
+
+        if (novelaRef != null) {
+
+            novelaRef.orderBy("likes", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+
+                        onFirestoreTaskComplete.novelaData(task.getResult().toObjects(Novela.class));
+                    }
+
+                }
+            });
+
+        }
+
     }
-
-
 
 
        public void getNovelas(List<String> idNovelas) {
@@ -83,6 +102,12 @@ public class NovelaFireRepository {
                             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                                 Novela novela = document.toObject(Novela.class);
                                 novelasUsuario.add(novela);
+                                Collections.sort(novelasUsuario, new Comparator<Novela>() {
+                                    @Override
+                                    public int compare(Novela o1, Novela o2) {
+                                        return new Integer(o2.getLikes()).compareTo(o1.getLikes());
+                                    }
+                                });
                                 onFirestoreTaskComplete.novelaDataUser(novelasUsuario);
                             }
                         }
@@ -107,7 +132,7 @@ public class NovelaFireRepository {
     }
 
 
-    public void anadirNovela(HashMap<String, String> novela) {
+    public void anadirNovela(HashMap<String, Object> novela) {
 
 
         novelaRef.add(novela).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {

@@ -146,6 +146,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.room.Model.Novela;
+import com.example.room.Model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +181,21 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         Glide.with(holder.itemView).load(novela.getImagen()).into(holder.imagen);
         holder.descripcion.setText(novela.getDescripcion());
         holder.autor.setText(novela.getAutor());
+        holder.numLikes.setText(novela.getLikes()+"");
         holder.cardView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transaction));
+
+        FirebaseFirestore.getInstance().collection("Users").document(novela.getPublicador()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    User user = task.getResult().toObject(User.class);
+                    holder.nombrePublicador.setText(user.getUsername());
+                    Glide.with(holder.itemView).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).into(holder.imagePublicador);
+                }
+            }
+        });
+
+
     }
 
     public void setNovelas(List<Novela> novelas) {
@@ -193,8 +213,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nombre, descripcion, autor, leerMas, editar;
-        private ImageView imagen, iconDownload;
+        private TextView nombre, descripcion, autor, leerMas, numLikes, nombrePublicador;
+        private ImageView imagen, iconDownload, iconLike, imagePublicador;
         private CardView cardView;
 
 
@@ -205,8 +225,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             descripcion = itemView.findViewById(R.id.descripcion);
             autor = itemView.findViewById(R.id.autor);
             leerMas = itemView.findViewById(R.id.leerMas);
-            editar = itemView.findViewById(R.id.editar);
             iconDownload = itemView.findViewById(R.id.download);
+            numLikes = itemView.findViewById(R.id.numLikes);
+            iconLike = itemView.findViewById(R.id.likes);
+            nombrePublicador = itemView.findViewById(R.id.nombreUsuarioPublica);
+            imagePublicador = itemView.findViewById(R.id.profilePictureUser);
             cardView = itemView.findViewById(R.id.cardViwLista);
 
             leerMas.setOnClickListener(new View.OnClickListener() {
@@ -216,17 +239,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 }
             });
 
-            editar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(novelas.get(getAdapterPosition()), editar.getId());
-                }
-            });
 
             iconDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(novelas.get(getAdapterPosition()), iconDownload.getId());
+                }
+            });
+
+            iconLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(novelas.get(getAdapterPosition()), iconLike.getId());
                 }
             });
 

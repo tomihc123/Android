@@ -95,6 +95,7 @@ public class FragmentProfileSettings extends Fragment {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    User datosUsuario;
 
     private EditText textoFiltro;
     private TextView usernameNav;
@@ -161,6 +162,8 @@ public class FragmentProfileSettings extends Fragment {
         joindate = v.findViewById(R.id.joindateprofile);
         editImageProfile = v.findViewById(R.id.editProfilePicture);
 
+
+
         toolbar = v.findViewById(R.id.topbar);
         drawerLayout = v.findViewById(R.id.drawer_layout);
         navigationView = v.findViewById(R.id.navigation_view);
@@ -173,27 +176,22 @@ public class FragmentProfileSettings extends Fragment {
         imageProfileNav = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
 
-        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    User user = task.getResult().toObject(User.class);
-                    usernameNav.setText(user.getUsername());
-                    GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true).into(imageProfileNav);
-                }
-            }
-        });
+            public void onChanged(User user) {
 
+                datosUsuario = user;
+                username.setText(datosUsuario.getUsername());
+                GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+datosUsuario.getImage())).into(imageProfile);
+                novelaViewModel.getNovelasUsuarios(datosUsuario.getIdNovelasSubidas());
+                usernameNav.setText(datosUsuario.getUsername());
+                GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+datosUsuario.getImage())).into(imageProfileNav);
+                url = datosUsuario.getImage();
+                haveImage = !datosUsuario.getImage().equals("yinyang.png");
+                Date date = new Date(Long.parseLong(datosUsuario.getJoinDate()));
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                joindate.setText("Join date: "+simpleDateFormat.format(date));
 
-
-        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                     User user = task.getResult().toObject(User.class);
-                     novelaViewModel.getNovelasUsuarios(user.getIdNovelasSubidas());
-                }
             }
         });
 
@@ -309,6 +307,10 @@ public class FragmentProfileSettings extends Fragment {
                                         if(task.isSuccessful()) {
                                             User user = task.getResult().toObject(User.class);
                                             user.getIdNovelasSubidas().remove(idNovelaEliminada);
+                                            //Para cuando tengas solo una novela y la elimines que se quite no se porque no te actualiza cuando eliminas todas, no se actualiza la ui
+                                            if(user.getIdNovelasSubidas().isEmpty()) {
+                                                novelaViewModel.setNovelasUsuarios(new ArrayList<>());
+                                            }
                                             FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update("idNovelasSubidas", user.getIdNovelasSubidas());
                                             eliminarImagen(idImagen);
                                         }
@@ -365,25 +367,10 @@ public class FragmentProfileSettings extends Fragment {
 
         storage = FirebaseStorage.getInstance();
 
-        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    User user = task.getResult().toObject(User.class);
-                    username.setText(user.getUsername());
 
-                        GlideApp.with(getActivity()).load(storage.getReference().child("images/" + user.getImage())).diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true).into(imageProfile);
-                        url = user.getImage();
 
-                        haveImage = !user.getImage().equals("yinyang.png");
 
-                    Date date = new Date(Long.parseLong(user.getJoinDate()));
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    joindate.setText("Join date: "+simpleDateFormat.format(date));
-                }
-            }
-        });
+
 
 
         editUsername.setOnClickListener(new View.OnClickListener() {
@@ -507,36 +494,43 @@ public class FragmentProfileSettings extends Fragment {
         pd.show();
 
         StorageReference storageReference;
+        final String randomKey = java.util.UUID.randomUUID().toString();
 
         if(!haveImage) {
-            final String randomKey = java.util.UUID.randomUUID().toString();
             storageReference = storage.getReference().child("images/"+randomKey);
             url = randomKey;
             haveImage = true;
         } else {
             storageReference = storage.getReference().child("images/"+url);
+            url = randomKey;
         }
 
-        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
-                Map<String, Object> map = new HashMap<>();
-                map.put("image", taskSnapshot.getMetadata().getName());
-                FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update(map);
-                Toast.makeText(getContext(), "Image Upload", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Cannot upload image", Toast.LENGTH_SHORT).show();
+            public void onSuccess(Void aVoid) {
+                StorageReference storageNuevo = storage.getReference().child("images/"+url);
+                storageNuevo.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pd.dismiss();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("image", taskSnapshot.getMetadata().getName());
+                        FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update(map);
+                        Toast.makeText(getContext(), "Image Upload", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Cannot upload image", Toast.LENGTH_SHORT).show();
 
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                pd.setMessage("Percentage: "+(int)progressPercent + "%");
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        pd.setMessage("Percentage: "+(int)progressPercent + "%");
+                    }
+                });
             }
         });
     }

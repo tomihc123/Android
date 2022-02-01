@@ -16,16 +16,18 @@ public class Novela {
     private String autor;
     private String enlaceDescarga;
     private int likes;
+    private String publicador;
 
     public Novela() {}
 
-    public Novela(String nombre, String imagen, String descripcion, String autor, String enlaceDescarga, int likes) {
+    public Novela(String nombre, String imagen, String descripcion, String autor, String enlaceDescarga, int likes, String publicador) {
         this.nombre = nombre;
         this.imagen = imagen;
         this.descripcion = descripcion;
         this.autor = autor;
         this.enlaceDescarga = enlaceDescarga;
         this.likes = likes;
+        this.publicador = publicador;
     }
 
     public String getAutor() {
@@ -83,4 +85,13 @@ public class Novela {
     public void setLikes(int likes) {
         this.likes = likes;
     }
+
+    public String getPublicador() {
+        return publicador;
+    }
+
+    public void setPublicador(String publicador) {
+        this.publicador = publicador;
+    }
+
 }

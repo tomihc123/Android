@@ -17,12 +17,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class AuthViewModel extends AndroidViewModel {
+public class AuthViewModel extends AndroidViewModel implements  AuthRepository.onFirestoreTaskCompleteUser {
 
     private AuthRepository authRepository;
     private MutableLiveData<FirebaseUser> user;
     private MutableLiveData<Boolean> loggedStatus;
     private MutableLiveData<String> visualizacion = new MutableLiveData<>();
+    private MutableLiveData<User> datosUsuario = new MutableLiveData<>();
 
 
 
@@ -45,7 +46,7 @@ public class AuthViewModel extends AndroidViewModel {
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
-        authRepository = new AuthRepository(application);
+        authRepository = new AuthRepository(application, this);
         user = authRepository.getFirebaseUserMutableLiveData();
         loggedStatus = authRepository.getUsserLoggedMutableLiveData();
 
@@ -55,12 +56,24 @@ public class AuthViewModel extends AndroidViewModel {
         authRepository.register(username, email, pass);
     }
 
+
+
     public void signIn(String email, String pass) {
         authRepository.login(email, pass);
     }
 
     public void signOut() {
         authRepository.signOut();
+    }
+
+    @Override
+    public void userData(User user) {
+        this.datosUsuario.setValue(user);
+    }
+
+    public MutableLiveData<User> datosUser()  {
+        authRepository.userData();
+        return datosUsuario;
     }
 
 }
