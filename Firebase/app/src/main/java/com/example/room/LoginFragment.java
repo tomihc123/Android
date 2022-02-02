@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.room.viewmodel.AuthViewModel;
+import com.example.room.viewmodel.NovelaViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -31,6 +32,7 @@ public class LoginFragment extends Fragment {
     private EditText email, password;
     private ImageView login, register;
     private AuthViewModel authViewModel;
+    private NovelaViewModel novelaViewModel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -60,6 +62,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
 
         authViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
 

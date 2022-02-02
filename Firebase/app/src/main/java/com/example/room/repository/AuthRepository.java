@@ -86,6 +86,7 @@ public class AuthRepository {
 
                                 firebaseUserMutableLiveData.postValue(auth.getCurrentUser());
                                 usserLoggedMutableLiveData.postValue(false);
+                                userData();
 
                             }
                         }
@@ -108,6 +109,7 @@ public class AuthRepository {
                     if(task.isSuccessful()) {
                         firebaseUserMutableLiveData.postValue(auth.getCurrentUser());
                         usserLoggedMutableLiveData.postValue(false);
+                        userData();
 
                     } else {
                         Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -137,8 +139,10 @@ public class AuthRepository {
                 usersRef.document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                        User user = documentSnapshot.toObject(User.class);
-                        onFirestoreTaskComplete.userData(user);
+                        if(documentSnapshot != null) {
+                            User user = documentSnapshot.toObject(User.class);
+                            onFirestoreTaskComplete.userData(user);
+                        }
                     }
                 });
 

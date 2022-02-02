@@ -33,6 +33,7 @@ public class RegisterFragment extends Fragment {
     private EditText nombreUsuario, password, email;
     private ImageView registerButton, logginButton;
     private AuthViewModel authViewModel;
+    private NovelaViewModel novelaViewModel;
 
 
 
@@ -66,7 +67,6 @@ public class RegisterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         authViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
-
 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {

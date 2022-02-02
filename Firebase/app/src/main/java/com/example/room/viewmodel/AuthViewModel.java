@@ -49,13 +49,11 @@ public class AuthViewModel extends AndroidViewModel implements  AuthRepository.o
         authRepository = new AuthRepository(application, this);
         user = authRepository.getFirebaseUserMutableLiveData();
         loggedStatus = authRepository.getUsserLoggedMutableLiveData();
-
     }
 
     public void register(String username, String email, String pass) {
         authRepository.register(username, email, pass);
     }
-
 
 
     public void signIn(String email, String pass) {
@@ -72,7 +70,6 @@ public class AuthViewModel extends AndroidViewModel implements  AuthRepository.o
     }
 
     public MutableLiveData<User> datosUser()  {
-        authRepository.userData();
         return datosUsuario;
     }
 

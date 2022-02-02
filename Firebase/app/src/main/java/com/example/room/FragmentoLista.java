@@ -134,12 +134,20 @@ public class FragmentoLista extends Fragment {
         View v = inflater.inflate(R.layout.fragment_lista, container, false);
 
 
+        novelaViewModel.cargarDatosNovelas();
+
         toolbar = v.findViewById(R.id.topbar);
         drawerLayout = v.findViewById(R.id.drawer_layout);
         navigationView = v.findViewById(R.id.navigation_view);
 
-       username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
-       imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
+        username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
+        imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
+
+        User user = authViewModel.datosUser().getValue();
+        if(user != null) {
+            username.setText(user.getUsername());
+            GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/" + user.getImage())).into(imageProfile);
+        }
 
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
@@ -262,20 +270,15 @@ public class FragmentoLista extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-       //novelaViewModel.getNovelas();
-
         recyclerView.setAdapter(adaptador);
-
 
 
         //Observamos los datos de la base de datos, en cuanto cambie se actualiza la lista
         novelaViewModel.getNovelas().observe(getActivity(), new Observer<List<Novela>>() {
             @Override
             public void onChanged(List<Novela> novelas) {
-                if(textoFiltro.getText().toString().isEmpty()) {
                     adaptador.setNovelas(novelas);
                     adaptador.notifyDataSetChanged();
-                }
             }
         });
 

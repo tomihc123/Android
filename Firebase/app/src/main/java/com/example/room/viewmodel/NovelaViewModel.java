@@ -18,6 +18,7 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
     private NovelaFireRepository novelaRepository;
     private MutableLiveData<List<Novela>> novelas = new MutableLiveData<>();
     private MutableLiveData<List<Novela>> novelasUsuarios = new MutableLiveData<>();
+    private boolean seACargadoYa = false;
 
 
     private MutableLiveData<String> idNovelaSubida = new MutableLiveData<>();
@@ -30,16 +31,19 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
         novelaRepository = new NovelaFireRepository(this);
     }
 
-
     @Override
     public void novelaData(List<Novela> novelas) {
         this.novelas.setValue(novelas);
     }
 
     public MutableLiveData<List<Novela>> getNovelas() {
-         novelaRepository.getNovelas();
          return novelas;
     }
+
+    public void cargarDatosNovelas() {
+        if(!seACargadoYa) {novelaRepository.getNovelas(); seACargadoYa=true; }
+    }
+
 
     @Override
     public void novelaDataUser(List<Novela> novelas) {

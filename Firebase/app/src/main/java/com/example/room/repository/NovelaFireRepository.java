@@ -41,7 +41,7 @@ public class NovelaFireRepository {
     }
 
 
-  /*  public void getNovelas() {
+    public void getNovelas() {
 
         if(novelaRef != null) {
 
@@ -55,35 +55,17 @@ public class NovelaFireRepository {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             Novela novela = document.toObject(Novela.class);
                             novelas.add(novela);
-                            onFirestoreTaskComplete.novelaData(novelas);
                         }
                     }
-
-                }
-            });
-
-        }
-
-    } */
-
-    public void getNovelas() {
-
-        if (novelaRef != null) {
-
-            novelaRef.orderBy("likes", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-
-                        onFirestoreTaskComplete.novelaData(task.getResult().toObjects(Novela.class));
-                    }
-
+                    onFirestoreTaskComplete.novelaData(novelas);
                 }
             });
 
         }
 
     }
+
+
 
 
        public void getNovelas(List<String> idNovelas) {
