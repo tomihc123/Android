@@ -177,11 +177,11 @@ public class FragmentProfileSettings extends Fragment {
 
 
 
-        User user = authViewModel.datosUser().getValue();
+    /*    User user = authViewModel.datosUser().getValue();
         if(user != null) {
             username.setText(user.getUsername());
             GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).into(imageProfile);
-            novelaViewModel.getNovelasUsuarios(user.getIdNovelasSubidas());
+            novelaViewModel.setIdNovelas(user.getIdNovelasSubidas());
             usernameNav.setText(user.getUsername());
             GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).into(imageProfileNav);
             url = user.getImage();
@@ -189,7 +189,7 @@ public class FragmentProfileSettings extends Fragment {
             Date date = new Date(Long.parseLong(user.getJoinDate()));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             joindate.setText("Join date: "+simpleDateFormat.format(date));
-        }
+        } */
 
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
@@ -199,7 +199,7 @@ public class FragmentProfileSettings extends Fragment {
                 datosUsuario = user;
                 username.setText(datosUsuario.getUsername());
                 GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+datosUsuario.getImage())).into(imageProfile);
-                novelaViewModel.getNovelasUsuarios(datosUsuario.getIdNovelasSubidas());
+                novelaViewModel.setIdNovelas(datosUsuario.getIdNovelasSubidas());
                 usernameNav.setText(datosUsuario.getUsername());
                 GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+datosUsuario.getImage())).into(imageProfileNav);
                 url = datosUsuario.getImage();
@@ -210,6 +210,17 @@ public class FragmentProfileSettings extends Fragment {
 
             }
         });
+
+
+            novelaViewModel.getIdNovelas().observe(getActivity(), new Observer<ArrayList<String>>() {
+                @Override
+                public void onChanged(ArrayList<String> strings) {
+                    novelaViewModel.getNovelasUsuarios(strings);
+                }
+            });
+
+
+
 
 
             listAdapter = new ListAdapterSettings(new ListAdapterSettings.OnItemClickListener() {
@@ -373,6 +384,9 @@ public class FragmentProfileSettings extends Fragment {
                         novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_SETTINGS));
                         break;
                     case R.id.nav_logout:
+                        novelaViewModel.vaciarIds();
+                        novelaViewModel.isSeACargadoYa(false);
+                        novelaViewModel.isSeHaCargadaYaNovelasUsuario(false);
                         authViewModel.signOut();
                         break;
                 }

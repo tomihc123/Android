@@ -90,10 +90,10 @@ public class NovelaFireRepository {
                                         return new Integer(o2.getLikes()).compareTo(o1.getLikes());
                                     }
                                 });
-                                onFirestoreTaskComplete.novelaDataUser(novelasUsuario);
                             }
                         }
                     }
+                    onFirestoreTaskComplete.novelaDataUser(novelasUsuario);
                 }
             });
 

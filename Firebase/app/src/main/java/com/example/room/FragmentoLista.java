@@ -143,11 +143,11 @@ public class FragmentoLista extends Fragment {
         username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
         imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
-        User user = authViewModel.datosUser().getValue();
+        /* User user = authViewModel.datosUser().getValue();
         if(user != null) {
             username.setText(user.getUsername());
             GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/" + user.getImage())).into(imageProfile);
-        }
+        } */
 
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
@@ -178,6 +178,9 @@ public class FragmentoLista extends Fragment {
                         novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_SETTINGS));
                         break;
                     case R.id.nav_logout:
+                        novelaViewModel.vaciarIds();
+                        novelaViewModel.isSeACargadoYa(false);
+                        novelaViewModel.isSeHaCargadaYaNovelasUsuario(false);
                         authViewModel.signOut();
                         break;
                 }
