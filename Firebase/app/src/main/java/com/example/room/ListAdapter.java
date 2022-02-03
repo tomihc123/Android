@@ -133,15 +133,21 @@ package com.example.room;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -149,9 +155,11 @@ import com.example.room.Model.Novela;
 import com.example.room.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.okhttp.FormEncodingBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,6 +204,42 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         });
 
 
+        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                User user = task.getResult().toObject(User.class);
+                if(user.getIdNovelasLikes().contains(novela.getId())) {
+                    holder.iconLike.setColorFilter(Color.parseColor("#26D5F8"), PorterDuff.Mode.SRC_IN);
+                    holder.iconLike.setTag("Azul");
+                } else {
+                    holder.iconLike.setColorFilter(Color.parseColor("#C3C3C3"), PorterDuff.Mode.SRC_IN);
+                    holder.iconLike.setTag("Gris");
+                }
+            }
+        });
+
+        holder.iconLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(holder.iconLike.getTag().equals("Gris")) {
+                    novela.setLikes(novela.getLikes() + 1);
+                    holder.numLikes.setText(novela.getLikes() + "");
+                    holder.iconLike.setColorFilter(Color.parseColor("#26D5F8"), PorterDuff.Mode.SRC_IN);
+                    holder.iconLike.setTag("Azul");
+                } else if (holder.iconLike.getTag().equals("Azul")) {
+                    if(novela.getLikes() >= 1) {
+                        novela.setLikes(novela.getLikes() + -1);
+                        holder.numLikes.setText(novela.getLikes() + "");
+                        holder.iconLike.setColorFilter(Color.parseColor("#C3C3C3"), PorterDuff.Mode.SRC_IN);
+                        holder.iconLike.setTag("Gris");
+                    }
+                }
+
+
+            }
+        });
     }
 
     public void setNovelas(List<Novela> novelas) {

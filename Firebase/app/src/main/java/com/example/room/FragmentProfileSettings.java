@@ -177,21 +177,6 @@ public class FragmentProfileSettings extends Fragment {
 
 
 
-    /*    User user = authViewModel.datosUser().getValue();
-        if(user != null) {
-            username.setText(user.getUsername());
-            GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).into(imageProfile);
-            novelaViewModel.setIdNovelas(user.getIdNovelasSubidas());
-            usernameNav.setText(user.getUsername());
-            GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/"+user.getImage())).into(imageProfileNav);
-            url = user.getImage();
-            haveImage = !user.getImage().equals("yinyang.png");
-            Date date = new Date(Long.parseLong(user.getJoinDate()));
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            joindate.setText("Join date: "+simpleDateFormat.format(date));
-        } */
-
-
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
             @Override
             public void onChanged(User user) {

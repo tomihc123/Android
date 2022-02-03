@@ -11,7 +11,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lighgrey">#989797</color>
-
+    <color name="like">#26D5F8</color>
     <color name="colorBg">#0F707070</color>
     <color name="colorView">#27707070</color>
 

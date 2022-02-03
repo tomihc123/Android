@@ -7,6 +7,7 @@ public class User {
 
     private String username, email, image, joinDate;
     private ArrayList<String> idNovelasSubidas;
+    private ArrayList<String> idNovelasLikes;
 
 
     public User() {
@@ -56,6 +57,14 @@ public class User {
 
     public void setIdNovelasSubidas(ArrayList<String> idNovelasSubidas) {
         this.idNovelasSubidas = idNovelasSubidas;
+    }
+
+    public ArrayList<String> getIdNovelasLikes() {
+        return idNovelasLikes;
+    }
+
+    public void setIdNovelasLikes(ArrayList<String> idNovelasLikes) {
+        this.idNovelasLikes = idNovelasLikes;
     }
 }
 

@@ -143,11 +143,6 @@ public class FragmentoLista extends Fragment {
         username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
         imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
-        /* User user = authViewModel.datosUser().getValue();
-        if(user != null) {
-            username.setText(user.getUsername());
-            GlideApp.with(getActivity()).load(FirebaseStorage.getInstance().getReference().child("images/" + user.getImage())).into(imageProfile);
-        } */
 
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
@@ -178,6 +173,8 @@ public class FragmentoLista extends Fragment {
                         novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_SETTINGS));
                         break;
                     case R.id.nav_logout:
+                        //En caso de que se deslogue necesitamos que primero ponga a falso que se han cargado las cosas para cuadno entre por primera vez, ademas necesitamos vaciar ese array de ids de usuario
+                        // ya que puede entrar un nuevo usuario que es lo normal cuando se deslogea uno necesitamos tener esa variable vacia para cargar esas ids nuevas
                         novelaViewModel.vaciarIds();
                         novelaViewModel.isSeACargadoYa(false);
                         novelaViewModel.isSeHaCargadaYaNovelasUsuario(false);
@@ -187,6 +184,7 @@ public class FragmentoLista extends Fragment {
                 return true;
             }
         });
+
 
         //Para gestionar los clicks en el recycler view
         adaptador = new ListAdapter(new ListAdapter.OnItemClickListener() {
@@ -200,7 +198,7 @@ public class FragmentoLista extends Fragment {
 
                 if(id == R.id.likes) {
 
-                    Toast.makeText(getActivity(), "im increasing", Toast.LENGTH_SHORT).show();
+
 
                 }
 

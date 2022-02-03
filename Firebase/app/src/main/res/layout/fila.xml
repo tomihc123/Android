@@ -108,14 +108,14 @@
                         android:layout_alignBottom="@id/profilePictureUser"
                         android:layout_marginEnd="90dp"
                         android:layout_toLeftOf="@id/profilePictureUser"
-                        android:src="@drawable/ic_baseline_thumb_up_24" />
+                        android:src="@drawable/ic_baseline_thumb_up_24"/>
 
                     <TextView
                         android:id="@+id/numLikes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/profilePictureUser"
-                        android:layout_marginEnd="70dp"
+                        android:layout_marginEnd="65dp"
                         android:layout_toLeftOf="@id/profilePictureUser"
                         android:textSize="16sp" />
 
