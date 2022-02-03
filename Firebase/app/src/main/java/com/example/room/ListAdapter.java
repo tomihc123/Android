@@ -192,7 +192,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.numLikes.setText(novela.getLikes()+"");
         holder.cardView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transaction));
 
-        FirebaseFirestore.getInstance().collection("Users").document(novela.getPublicador()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+      FirebaseFirestore.getInstance().collection("Users").document(novela.getPublicador()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
@@ -218,7 +218,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             }
         });
 
-        holder.iconLike.setOnClickListener(new View.OnClickListener() {
+      /*  holder.iconLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -228,18 +228,39 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                     holder.numLikes.setText(novela.getLikes() + "");
                     holder.iconLike.setColorFilter(Color.parseColor("#26D5F8"), PorterDuff.Mode.SRC_IN);
                     holder.iconLike.setTag("Azul");
+                    FirebaseFirestore.getInstance().collection(("Users")).document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            User user = task.getResult().toObject(User.class);
+                            if(!user.getIdNovelasLikes().contains(novela.getId())) {
+                                user.getIdNovelasLikes().add(novela.getId());
+                                FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("idNovelasLikes", user.getIdNovelasLikes());
+                            }
+                        }
+                    });
                 } else if (holder.iconLike.getTag().equals("Azul")) {
                     if(novela.getLikes() >= 1) {
                         novela.setLikes(novela.getLikes() + -1);
                         holder.numLikes.setText(novela.getLikes() + "");
                         holder.iconLike.setColorFilter(Color.parseColor("#C3C3C3"), PorterDuff.Mode.SRC_IN);
                         holder.iconLike.setTag("Gris");
+                        FirebaseFirestore.getInstance().collection(("Users")).document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                User user = task.getResult().toObject(User.class);
+                                if(user.getIdNovelasLikes().contains(novela.getId())) {
+                                    user.getIdNovelasLikes().remove(novela.getId());
+                                    FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("idNovelasLikes", user.getIdNovelasLikes());
+                                }
+                            }
+                        });
+
                     }
                 }
 
 
             }
-        });
+        }); */
     }
 
     public void setNovelas(List<Novela> novelas) {
@@ -294,13 +315,53 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             iconLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    Novela novela = novelas.get(getAdapterPosition());
+
+
+                    if(iconLike.getTag().equals("Gris")) {
+                                novela.setLikes(novela.getLikes() + 1);
+                                numLikes.setText(novela.getLikes() + "");
+                                iconLike.setColorFilter(Color.parseColor("#26D5F8"), PorterDuff.Mode.SRC_IN);
+                                iconLike.setTag("Azul");
+                                FirebaseFirestore.getInstance().collection(("Users")).document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        User user = task.getResult().toObject(User.class);
+                                        if(!user.getIdNovelasLikes().contains(novela.getId())) {
+                                            user.getIdNovelasLikes().add(novela.getId());
+                                            FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("idNovelasLikes", user.getIdNovelasLikes());
+                                        }
+                                    }
+                                });
+                            } else if (iconLike.getTag().equals("Azul")) {
+                        if (novela.getLikes() >= 1) {
+                            novela.setLikes(novela.getLikes() + -1);
+                            numLikes.setText(novela.getLikes() + "");
+                            iconLike.setColorFilter(Color.parseColor("#C3C3C3"), PorterDuff.Mode.SRC_IN);
+                            iconLike.setTag("Gris");
+                            FirebaseFirestore.getInstance().collection(("Users")).document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    User user = task.getResult().toObject(User.class);
+                                    if (user.getIdNovelasLikes().contains(novela.getId())) {
+                                        user.getIdNovelasLikes().remove(novela.getId());
+                                        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("idNovelasLikes", user.getIdNovelasLikes());
+                                    }
+                                }
+
+                            });
+                        }
+
+                    }
+
                     listener.onItemClick(novelas.get(getAdapterPosition()), iconLike.getId());
+
+                        }
+
+                    });
                 }
-            });
-
         }
-
-    }
 
     public interface OnItemClickListener {
         void onItemClick(Novela novela, int id);

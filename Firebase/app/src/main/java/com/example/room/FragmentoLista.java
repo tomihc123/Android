@@ -198,7 +198,7 @@ public class FragmentoLista extends Fragment {
 
                 if(id == R.id.likes) {
 
-
+                 FirebaseFirestore.getInstance().collection("Novelas").document(novela.getId()).update("likes", novela.getLikes());
 
                 }
 
