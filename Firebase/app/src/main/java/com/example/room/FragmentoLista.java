@@ -2,6 +2,7 @@ package com.example.room;
 
 import android.Manifest;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -42,6 +43,8 @@ import com.example.room.Model.User;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -52,11 +55,14 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
+
+import io.opencensus.trace.Link;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,8 +88,9 @@ public class FragmentoLista extends Fragment {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    boolean sePuedeDeslogear = false;
 
-    private HashMap<String, Integer> mapaLikes;
+    private LinkedHashMap<String, Integer> mapaLikes;
 
     private User userData;
 
@@ -148,7 +155,7 @@ public class FragmentoLista extends Fragment {
         username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
         imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
-        mapaLikes = new HashMap<>();
+        mapaLikes = new LinkedHashMap<>();
 
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -194,11 +201,29 @@ public class FragmentoLista extends Fragment {
                         novelaViewModel.vaciarIds();
                         novelaViewModel.isSeACargadoYa(false);
                         novelaViewModel.isSeHaCargadaYaNovelasUsuario(false);
-                        for (Map.Entry<String, Integer> dato : mapaLikes.entrySet()) {
-                            FirebaseFirestore.getInstance().collection("Novelas").document(dato.getKey()).update("likes", dato.getValue());
+                        String lastClave = getLast(mapaLikes);
+                        if(!mapaLikes.isEmpty()) {
+                            new ProgressDialog()
+                            for (LinkedHashMap.Entry<String, Integer> dato : mapaLikes.entrySet()) {
+                                //Actualizamos los likes
+                                FirebaseFirestore.getInstance().collection("Novelas").document(dato.getKey()).update("likes", dato.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (dato.getKey().equals(lastClave)) {
+                                            authViewModel.signOut();
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
+                            }
+                        } else {
+                            authViewModel.signOut();
+
                         }
-                        
-                        authViewModel.signOut();
                         break;
                 }
                 return true;
@@ -393,6 +418,27 @@ public class FragmentoLista extends Fragment {
             }
 
         }
+
+
+
+    public String getLast(LinkedHashMap<String, Integer> LinkedHMap)
+    {
+        int count = 1;
+
+        String clave = "";
+
+        for (Map.Entry<String, Integer> it : LinkedHMap.entrySet()) {
+
+        if (count == LinkedHMap.size()) {
+
+            clave = it.getKey();
+
+        }
+        count++;
+         }
+        return clave;
+    }
+
 
     @Override
     public void onDestroyView() {
