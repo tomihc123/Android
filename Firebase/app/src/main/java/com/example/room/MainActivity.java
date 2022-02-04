@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (findViewById(R.id.contenedorGeneral) != null) {
                 isSmall = true;
-                getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, loginFragment).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, loginFragment).commit();
 
             } else {
                 isSmall = false;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, registerFragment).addToBackStack(null).commit();
                     }
                     if(s.equals(getResources().getString(R.string.VISUALIZACION_IRALLOGIN))) {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, loginFragment).addToBackStack(null).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, loginFragment).commit();
                     }
                 }
             }
@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(String s) {
                 if (isSmall) {
                     if (s.equals(getResources().getString(R.string.VISUALIZACION_LISTA))) {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).addToBackStack(null).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoLista).commit();
                     } else if (s.equals(getResources().getString(R.string.VISUALIZACION_ANADIR))) {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoAnadir).addToBackStack(null).commit();
                     } else  if(s.equals(getResources().getString(R.string.VISUALIZACION_EDITAR))) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorGeneral, fragmentoDetalle).addToBackStack(null).commit();
                     } else if(s.equals(getResources().getString(R.string.VISUALIZACION_SETTINGS))){

@@ -66,6 +66,28 @@ public class NovelaFireRepository {
     }
 
 
+  /*  public void getNovelas() {
+
+        if(novelaRef != null) {
+
+            novelaRef.orderBy("likes", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if(task.isSuccessful()) {
+
+                        onFirestoreTaskComplete.novelaData(task.getResult().toObjects(Novela.class));
+
+                    }
+
+
+                }
+            });
+
+        }
+
+    } */
+
 
 
        public void getNovelas(List<String> idNovelas) {

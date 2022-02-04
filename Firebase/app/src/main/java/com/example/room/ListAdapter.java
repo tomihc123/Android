@@ -367,4 +367,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         void onItemClick(Novela novela, int id);
     }
 
+
+
+
+
 }

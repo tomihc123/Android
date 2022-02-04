@@ -50,7 +50,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
@@ -79,6 +81,8 @@ public class FragmentoLista extends Fragment {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+
+    private HashMap<String, Integer> mapaLikes;
 
     private User userData;
 
@@ -143,7 +147,7 @@ public class FragmentoLista extends Fragment {
         username = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
         imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
-
+        mapaLikes = new HashMap<>();
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
             @Override
@@ -178,6 +182,10 @@ public class FragmentoLista extends Fragment {
                         novelaViewModel.vaciarIds();
                         novelaViewModel.isSeACargadoYa(false);
                         novelaViewModel.isSeHaCargadaYaNovelasUsuario(false);
+                        for (Map.Entry<String, Integer> dato : mapaLikes.entrySet()) {
+                            FirebaseFirestore.getInstance().collection("Novelas").document(dato.getKey()).update("likes", dato.getValue());
+                        }
+                        
                         authViewModel.signOut();
                         break;
                 }
@@ -198,7 +206,10 @@ public class FragmentoLista extends Fragment {
 
                 if(id == R.id.likes) {
 
-                 FirebaseFirestore.getInstance().collection("Novelas").document(novela.getId()).update("likes", novela.getLikes());
+
+                    mapaLikes.put(novela.getId(), novela.getLikes());
+
+                 //FirebaseFirestore.getInstance().collection("Novelas").document(novela.getId()).update("likes", novela.getLikes());
 
                 }
 
@@ -371,5 +382,13 @@ public class FragmentoLista extends Fragment {
 
         }
 
+    @Override
+    public void onDestroyView() {
+
+        for (Map.Entry<String, Integer> dato : mapaLikes.entrySet()) {
+            FirebaseFirestore.getInstance().collection("Novelas").document(dato.getKey()).update("likes", dato.getValue());
+        }
+        super.onDestroyView();
+    }
 
 }
