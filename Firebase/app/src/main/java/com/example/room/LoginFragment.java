@@ -2,6 +2,7 @@ package com.example.room;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -94,6 +95,15 @@ public class LoginFragment extends Fragment {
             }
         });
 
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button even
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
 
         register.setOnClickListener(new View.OnClickListener() {

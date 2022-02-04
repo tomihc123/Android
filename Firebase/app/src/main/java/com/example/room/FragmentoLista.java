@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
@@ -148,6 +149,17 @@ public class FragmentoLista extends Fragment {
         imageProfile = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
         mapaLikes = new HashMap<>();
+
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button even
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
             @Override
@@ -390,5 +402,7 @@ public class FragmentoLista extends Fragment {
         }
         super.onDestroyView();
     }
+
+
 
 }
