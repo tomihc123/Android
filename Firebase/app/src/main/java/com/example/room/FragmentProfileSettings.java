@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -41,6 +42,12 @@ import com.example.room.Model.Novela;
 import com.example.room.Model.User;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -87,6 +94,8 @@ public class FragmentProfileSettings extends Fragment {
     ProgressBar progressBar;
     private Uri imageUri;
     private FirebaseStorage storage;
+
+    private PieChart pieChart;
 
     private boolean haveImage;
     private String url;
@@ -172,11 +181,16 @@ public class FragmentProfileSettings extends Fragment {
 
         recyclerView = v.findViewById(R.id.listaNovelasUsuario);
 
+        pieChart = v.findViewById(R.id.pieChart);
+
         usernameNav = navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
         imageProfileNav = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
 
         aboutMe = v.findViewById(R.id.aboutMe);
+
+        initPieChart();
+        showPieChart();
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
             @Override
@@ -213,6 +227,51 @@ public class FragmentProfileSettings extends Fragment {
             listAdapter = new ListAdapterSettings(new ListAdapterSettings.OnItemClickListener() {
             @Override
             public void onItemClick(Novela novela, int id) {
+
+                if(id == R.id.eliminar) {
+                    AlertDialog dialogo = new AlertDialog
+                            .Builder(getActivity())
+                            .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Obtenemos la novela en la posicion de ese view holder
+                                    String idNovelaEliminada = novela.getId();
+                                    String idImagen = novela.getImagen();
+                                    novelaViewModel.eliminarNovela(novela);
+                                    FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if(task.isSuccessful()) {
+                                                User user = task.getResult().toObject(User.class);
+                                                user.getIdNovelasSubidas().remove(idNovelaEliminada);
+                                                //Para cuando tengas solo una novela y la elimines que se quite no se porque no te actualiza cuando eliminas todas, no se actualiza la ui
+                                                if(user.getIdNovelasSubidas().isEmpty()) {
+                                                    novelaViewModel.setNovelasUsuarios(new ArrayList<>());
+                                                }
+                                                FirebaseFirestore.getInstance().collection("Users").document(authViewModel.getUser().getValue().getUid()).update("idNovelasSubidas", user.getIdNovelasSubidas());
+                                                eliminarImagen(idImagen);
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                //Si se cancela que se sigua mostrando todas las novelas
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listAdapter.setNovelas(novelaViewModel.getNovelasUsuarios().getValue());
+                                }
+                            })
+                            .setTitle("Confirmar")
+                            .setMessage("¿Deseas eliminar la novela "+novela.getNombre()+" ?") // El mensaje
+                            .create();
+
+                    dialogo.show();
+                    //Si se ha salido fuera del dialog sin pulsar cancelar, tambien debemos mostrar las novelas como estaban
+                    listAdapter.setNovelas(novelaViewModel.getNovelasUsuarios().getValue());
+
+                }
+
                 if(id == R.id.leerMas) {
                     novelaViewModel.setNovelaEditar(novela);
                     novelaViewModel.setVisualizacion(getResources().getString(R.string.VISUALIZACION_EDITAR));
@@ -503,6 +562,73 @@ public class FragmentProfileSettings extends Fragment {
 
             }
         });
+    }
+
+
+    private void initPieChart(){
+        //using percentage as values instead of amount
+        pieChart.setUsePercentValues(true);
+
+        //remove the description label on the lower left corner, default true if not set
+        pieChart.getDescription().setEnabled(false);
+
+        pieChart.getLegend().setEnabled(false);
+
+
+
+        //enabling the user to rotate the chart, default true
+        pieChart.setRotationEnabled(true);
+        //adding friction when rotating the pie chart
+        pieChart.setDragDecelerationFrictionCoef(0.9f);
+        //setting the first entry start from right hand side, default starting from top
+        pieChart.setRotationAngle(0);
+
+        //highlight the entry when it is tapped, default true if not set
+        pieChart.setHighlightPerTapEnabled(true);
+        //adding animation so the entries pop up from 0 degree
+        pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+
+    }
+
+    private void showPieChart() {
+
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        String label = "type";
+
+        //initializing data
+        Map<String, Integer> typeAmountMap = new HashMap<>();
+        typeAmountMap.put("Diciembre",30);
+        typeAmountMap.put("Enero",10);
+        typeAmountMap.put("Febrero",60);
+
+        //initializing colors for the entries
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(Color.parseColor("#0DECBE"));
+        colors.add(Color.parseColor("#2BA7BA"));
+        colors.add(Color.parseColor("#33EBFF"));
+
+        //input data and fit data into pie chart entry
+        for(String type: typeAmountMap.keySet()){
+            pieEntries.add(new PieEntry(typeAmountMap.get(type).floatValue(), type));
+        }
+
+        //collecting the entries with label name
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,label);
+        //providing color list for coloring different entries
+        pieDataSet.setColors(colors);
+        //grouping the data set from entry to chart
+        PieData pieData = new PieData(pieDataSet);
+
+        pieDataSet.setValueTextSize(16f);
+
+        //showing the value of the entries, default true if not set
+        pieData.setDrawValues(true);
+
+        pieData.setValueFormatter(new PercentFormatter());
+
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+
     }
 
     private void uploadImage() {

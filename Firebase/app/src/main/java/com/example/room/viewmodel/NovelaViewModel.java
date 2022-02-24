@@ -46,7 +46,6 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
         if(!seACargadoYa) {novelaRepository.getNovelas(); seACargadoYa=true; }
     }
 
-
     public void setIdNovelas(ArrayList<String> idNovelas) {
         boolean iguales = true;
         if(this.idNovelas.getValue() != null) {
@@ -71,7 +70,6 @@ public class NovelaViewModel extends AndroidViewModel implements NovelaFireRepos
     public MutableLiveData<ArrayList<String>> getIdNovelas() {
         return idNovelas;
     }
-
 
     @Override
     public void novelaDataUser(List<Novela> novelas) {

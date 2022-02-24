@@ -60,9 +60,8 @@
                         android:id="@+id/nombreUsuarioPublica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsbold"
                         android:layout_alignParentEnd="true"
-                        android:text="@android:color/background_dark" />
+                        android:fontFamily="@font/poppinsbold"/>
 
                 </RelativeLayout>
 

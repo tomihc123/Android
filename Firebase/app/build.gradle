@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.room"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"

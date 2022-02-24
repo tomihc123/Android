@@ -194,7 +194,7 @@ public class ListAdapterSettings extends RecyclerView.Adapter<ListAdapterSetting
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nombre, descripcion, autor, leerMas, editar;
-        private ImageView imagen, iconDownload;
+        private ImageView imagen, eliminar;
         private CardView cardView;
 
 
@@ -206,6 +206,7 @@ public class ListAdapterSettings extends RecyclerView.Adapter<ListAdapterSetting
             autor = itemView.findViewById(R.id.autor);
             leerMas = itemView.findViewById(R.id.leerMas);
             editar = itemView.findViewById(R.id.editar);
+            eliminar = itemView.findViewById(R.id.eliminar);
             cardView = itemView.findViewById(R.id.cardViwLista);
 
             leerMas.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +220,14 @@ public class ListAdapterSettings extends RecyclerView.Adapter<ListAdapterSetting
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(novelas.get(getAdapterPosition()), editar.getId());
+                }
+            });
+
+
+            eliminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(novelas.get(getAdapterPosition()), eliminar.getId());
                 }
             });
 
