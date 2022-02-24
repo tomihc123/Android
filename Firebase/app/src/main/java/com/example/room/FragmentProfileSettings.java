@@ -77,7 +77,7 @@ public class FragmentProfileSettings extends Fragment {
     private NovelaViewModel novelaViewModel;
     private AuthViewModel authViewModel;
 
-    private TextView username, joindate;
+    private TextView username, joindate, aboutMe;
     private ImageView imageProfile, editImageProfile, editUsername;
 
 
@@ -176,6 +176,7 @@ public class FragmentProfileSettings extends Fragment {
         imageProfileNav = navigationView.getHeaderView(0).findViewById(R.id.profilePicture);
 
 
+        aboutMe = v.findViewById(R.id.aboutMe);
 
         authViewModel.datosUser().observe(getActivity(), new Observer<User>() {
             @Override
@@ -192,6 +193,7 @@ public class FragmentProfileSettings extends Fragment {
                 Date date = new Date(Long.parseLong(datosUsuario.getJoinDate()));
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 joindate.setText("Join date: "+simpleDateFormat.format(date));
+                aboutMe.setText(datosUsuario.getAboutMe());
 
             }
         });

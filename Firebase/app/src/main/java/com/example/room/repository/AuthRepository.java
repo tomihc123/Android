@@ -77,6 +77,7 @@ public class AuthRepository {
                     user.setJoinDate(auth.getCurrentUser().getMetadata().getCreationTimestamp()+"");
                     user.setImage("yinyang.png");
                     user.setIdNovelasSubidas(new ArrayList<String>());
+                    user.setIdNovelasLikes(new ArrayList<String>());
 
 
                     FirebaseFirestore.getInstance().collection("Users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {

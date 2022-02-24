@@ -9,6 +9,8 @@ public class User {
     private ArrayList<String> idNovelasSubidas;
     private ArrayList<String> idNovelasLikes;
 
+    private String aboutMe;
+
 
     public User() {
 
@@ -65,6 +67,15 @@ public class User {
 
     public void setIdNovelasLikes(ArrayList<String> idNovelasLikes) {
         this.idNovelasLikes = idNovelasLikes;
+    }
+
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 }
 

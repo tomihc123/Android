@@ -1,6 +1,7 @@
 package com.example.room;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -198,12 +199,17 @@ public class FragmentoLista extends Fragment {
                     case R.id.nav_logout:
                         //En caso de que se deslogue necesitamos que primero ponga a falso que se han cargado las cosas para cuadno entre por primera vez, ademas necesitamos vaciar ese array de ids de usuario
                         // ya que puede entrar un nuevo usuario que es lo normal cuando se deslogea uno necesitamos tener esa variable vacia para cargar esas ids nuevas
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        View view = getLayoutInflater().inflate(R.layout.custom_progress_dialog, null);
+                        builder.setView(view);
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                         novelaViewModel.vaciarIds();
                         novelaViewModel.isSeACargadoYa(false);
                         novelaViewModel.isSeHaCargadaYaNovelasUsuario(false);
                         String lastClave = getLast(mapaLikes);
                         if(!mapaLikes.isEmpty()) {
-                            new ProgressDialog()
+
                             for (LinkedHashMap.Entry<String, Integer> dato : mapaLikes.entrySet()) {
                                 //Actualizamos los likes
                                 FirebaseFirestore.getInstance().collection("Novelas").document(dato.getKey()).update("likes", dato.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -211,16 +217,13 @@ public class FragmentoLista extends Fragment {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (dato.getKey().equals(lastClave)) {
                                             authViewModel.signOut();
+                                            dialog.dismiss();
                                         }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
                                     }
                                 });
                             }
                         } else {
+                            dialog.dismiss();
                             authViewModel.signOut();
 
                         }
@@ -244,9 +247,8 @@ public class FragmentoLista extends Fragment {
                 if(id == R.id.likes) {
 
 
+                    //Actuakizanmos el mapa de likes con la id y el numero de likes nuevo
                     mapaLikes.put(novela.getId(), novela.getLikes());
-
-                 //FirebaseFirestore.getInstance().collection("Novelas").document(novela.getId()).update("likes", novela.getLikes());
 
                 }
 
@@ -429,13 +431,13 @@ public class FragmentoLista extends Fragment {
 
         for (Map.Entry<String, Integer> it : LinkedHMap.entrySet()) {
 
-        if (count == LinkedHMap.size()) {
+            if (count == LinkedHMap.size()) {
 
-            clave = it.getKey();
+                clave = it.getKey();
 
+            }
+             count++;
         }
-        count++;
-         }
         return clave;
     }
 
