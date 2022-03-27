@@ -129,7 +129,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
 
-package com.example.room;
+package com.example.room.adapters;
 
 
 import android.content.Context;
@@ -146,6 +146,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.room.Model.Novela;
+import com.example.room.R;
 
 import java.util.ArrayList;
 import java.util.List;

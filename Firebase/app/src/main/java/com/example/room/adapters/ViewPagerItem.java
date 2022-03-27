@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.adapters;
 
 public class ViewPagerItem {
 

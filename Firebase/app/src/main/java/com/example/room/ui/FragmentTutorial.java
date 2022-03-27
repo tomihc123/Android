@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.ui;
 
 import android.os.Bundle;
 
@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.room.R;
+import com.example.room.adapters.ViewPagerAdapter;
+import com.example.room.adapters.ViewPagerItem;
 import com.example.room.viewmodel.AuthViewModel;
-import com.example.room.viewmodel.NovelaViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;

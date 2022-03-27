@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.ui;
 
 import android.os.Bundle;
 
@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
+import com.example.room.adapters.ListComentarioAdapter;
+import com.example.room.R;
 import com.example.room.viewmodel.NovelaViewModel;
 
 /**

@@ -1,9 +1,8 @@
-package com.example.room;
+package com.example.room.ui;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -37,33 +36,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.room.adapters.GlideApp;
+import com.example.room.adapters.ListAdapter;
 import com.example.room.Model.Novela;
 import com.example.room.Model.User;
+import com.example.room.R;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
-
-import io.opencensus.trace.Link;
 
 /**
  * A simple {@link Fragment} subclass.

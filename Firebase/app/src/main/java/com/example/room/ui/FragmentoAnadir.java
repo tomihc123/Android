@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.ui;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.room.Model.User;
+import com.example.room.R;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;

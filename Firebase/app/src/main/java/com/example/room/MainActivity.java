@@ -1,9 +1,7 @@
 package com.example.room;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 
@@ -11,6 +9,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.room.ui.FragmentProfileSettings;
+import com.example.room.ui.FragmentTutorial;
+import com.example.room.ui.FragmentoAnadir;
+import com.example.room.ui.FragmentoDetalle;
+import com.example.room.ui.FragmentoLista;
+import com.example.room.ui.LoginFragment;
+import com.example.room.ui.RegisterFragment;
 import com.example.room.viewmodel.AuthViewModel;
 import com.example.room.viewmodel.NovelaViewModel;
 
